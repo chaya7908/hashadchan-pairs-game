@@ -1,0 +1,258 @@
+html {
+    --color-blue: #09081e;
+    --color-gray: #e9ebf3;
+    --color-yellow: #ffd500;
+    --color-light-purple: #98aaf1;
+    --color-red: #ff7777;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    display: flex;
+    width: 100vw;
+    background-color: var(--color-gray);
+}
+
+/* ================ page layout ================ */
+body {
+    display: flex;
+    flex-direction: column;
+}
+.header {
+    background-color: var(--color-blue);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+    flex-direction: row-reverse;
+}
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap:  50px;
+    flex-wrap: wrap;
+}
+.section {
+    flex: 1 1 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, auto);
+
+    grid-template-columns: repeat(5, minmax(100px, 150px));
+    grid-template-rows: repeat(4, minmax(120px, 1fr));
+
+    gap: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 10;
+}
+#match-animation {
+    position: relative;
+    flex-basis: 200px;
+    z-index: 1;
+    width: 200px;
+    margin: auto -100px;
+}
+#match-animation img {
+    width: 100%;
+}
+
+@media (max-width: 1300px) {
+    .section {
+        flex: 1 0 100%;
+    }
+    #match-animation {
+        margin: -100px auto;
+    }
+}
+
+/* ================ card basic style ================ */
+.card {
+    perspective: 1000px;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s ease, box-shadow 0.5s ease, background-color 3s ease;
+    overflow: hidden;
+}
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ================ style of card front image ================ */
+.card-front .image-container {
+    width:  100%;
+    height: 100%;
+    display: flex;
+}
+.card-front .image-container {
+    transition: all 0.5s ease, box-shadow 0.5s ease;
+}
+.card-front .image-container > img {
+    width: 80%;
+    margin: auto;
+}
+.card-front .emoji-container {
+    padding-top: 75%;
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.card:not(.flipped):hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+.card:not(.flipped):hover .image-container {
+    transform: scale(1.2);
+}
+
+.card-back {
+    transform: rotateY(180deg);
+    text-align: center;
+}
+
+/* ================ actvie card ================ */
+.card.active {
+    position: absolute;
+    width: 70%;
+    height: 70%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background-color: var(--color-light-purple);
+    box-shadow: 0 8px 16px 20px rgba(0, 0, 0, 0.2);
+}
+.placeholder {
+    visibility: hidden;
+}
+
+/* ================ matched card ================ */
+.card.matched:hover .image-container {
+    display: none;
+}
+
+.card.matched:hover .emoji-container {
+    display: block;
+}
+
+
+/* ================ timer ================ */
+.timer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  color: var(--color-yellow);
+}
+.digit {
+  display: inline-block;
+  min-width: 20px;
+  position: relative;
+  overflow: hidden; /* Ensures content outside the bounds is hidden */
+}
+.digit.new {
+  animation: slideUp 0.3s ease-in-out forwards;
+}
+.digit.old {
+  animation: slideDown 0.3s ease-in-out forwards;
+}
+
+/* ================ animations ================ */
+.rotate {
+  transform-origin: center;
+  animation: rotate 3s linear infinite;
+}
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+.swing {
+  animation: swing 10s infinite;
+  animation-delay: var(--random-delay);
+}
+@keyframes swing {
+  0% { transform: rotate(0deg) }
+  15% { transform: rotate(-15deg) }
+  30% { transform: rotate(0deg) }
+  45% { transform: rotate(15deg) }
+  60% { transform: rotate(0deg) }
+  100% { transform: rotate(0deg) }
+}
+
+.zoom {
+  animation: zoomInOut 4s ease-in-out infinite;
+  transform-origin: center;
+  animation-delay: 3s;
+}
+@keyframes zoomInOut {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.5); }
+  100% { transform: scale(1); }
+}
+
+.blink-bg-color {
+  animation: blink 0.5s infinite;
+  background-color: var(--blink-color, #98aaf1) !important;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.rotate-zoom {
+    z-index: 100 !important;
+    animation: rotate-zoom 4s forwards, blink-opacity 0.1s 3.5s step-end 20;
+}
+@keyframes rotate-zoom {
+  0% { transform: rotate(0deg) scale(0.2); }
+  100% { transform: rotate(10000deg) scale(3); }
+}
+
+@keyframes blink-opacity {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.die-animation {
+  z-index: 100 !important;
+  animation: dieEffect 4s ease-out forwards;
+}
+@keyframes dieEffect {
+  0% { transform: rotate(0deg) scale(4); opacity: 1; filter: hue-rotate(0deg); }
+  50% { transform: rotate(90deg) scale(0.8); opacity: 0.8; filter: hue-rotate(90deg); }
+  100% { transform: rotate(180deg) scale(0); opacity: 0; filter: hue-rotate(180deg); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0%); opacity: 1; }
+}
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0%); opacity: 1; }
+}
