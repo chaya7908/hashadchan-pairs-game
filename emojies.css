@@ -1,6 +1,7 @@
 body {
   text-align: center;
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  direction: rtl;
 }
 
 .emoji {

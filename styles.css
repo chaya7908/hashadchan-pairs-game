@@ -26,7 +26,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 5px 20px;
-    flex-direction: row-reverse;
+    flex-direction: row;
 }
 .container {
     display: flex;
@@ -133,6 +133,31 @@ body {
     text-align: center;
 }
 
+/* ============= style of card back ============= */
+.card-back .card-details {
+  display: flex;
+  gap: 40px;
+  flex-direction: column;
+}
+.card-back .property {
+  display: flex;
+  margin-bottom: 5px;
+  /* justify-content: space-between; */
+}
+
+.card-back .title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-blue);
+  margin-bottom: 5px;
+  text-align: right;
+}
+
+.card-back .property .key {
+  font-weight:800;
+  margin-left: 10px;
+}
+
 /* ================ actvie card ================ */
 .card.active {
     position: absolute;
@@ -161,6 +186,7 @@ body {
 
 /* ================ timer ================ */
 .timer-container {
+  direction: ltr;
   display: flex;
   justify-content: center;
   align-items: center;

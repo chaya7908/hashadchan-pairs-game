@@ -1,45 +1,392 @@
+const TRANSLATION = {
+  CONSERVATIVE: "שמור",
+  CONSERVATIVE_AND_OPEN_MIND: "שמור וראש פתוח",
+  VERY_CONSERVATIVE: "שמור מאד",
+  OPEN: "פתוח",
+  MODERN: "מודרני",
+  VERY_MODERN: "מודרני מאד",
+
+
+  FEMALE_CONSERVATIVE: "שמורה",
+  FEMALE_CONSERVATIVE_AND_OPEN_MIND: "שמורה וראש פתוח",
+  FEMALE_VERY_CONSERVATIVE: "שמורה מאד",
+  FEMALE_OPEN: "פתוחה",
+  FEMALE_MODERN: "מודרנית",
+  FEMALE_VERY_MODERN: "מודרנית מאד",
+
+  openMinded: "פתיחות",
+  sector: "מגזר",
+  age: "גיל",
+  HASIDIC: "חסידי",
+  LITHUANIAN: "ליטאי",
+  SFARADI: "ספרדי",
+  YEMEN: "תימני",
+  CHABAD: "חבד",
+  HALF_HALF: "חצי חצי",
+}
+
 const maleCandidates = [
-    { id: 1, imageUrl: 'MALE_PROFILE_1', properties: { strength: 7, intelligence: 5, kindness: 6, humor: 8, creativity: 4 }, lookingFor: { kindness: 7, intelligence: 6 } },
-    { id: 2, imageUrl: 'MALE_PROFILE_2', properties: { strength: 4, intelligence: 8, kindness: 5, humor: 3, creativity: 7 }, lookingFor: { creativity: 6, humor: 4 } },
-    { id: 3, imageUrl: 'MALE_PROFILE_3', properties: { strength: 6, intelligence: 9, kindness: 4, humor: 2, creativity: 5 }, lookingFor: { intelligence: 8, creativity: 4 } },
-    { id: 4, imageUrl: 'MALE_PROFILE_4', properties: { strength: 9, intelligence: 6, kindness: 7, humor: 5, creativity: 3 }, lookingFor: { strength: 8, kindness: 6 } },
-    { id: 5, imageUrl: 'MALE_PROFILE_5', properties: { strength: 3, intelligence: 7, kindness: 8, humor: 4, creativity: 9 }, lookingFor: { humor: 5, creativity: 7 } },
-    { id: 6, imageUrl: 'MALE_PROFILE_6', properties: { strength: 8, intelligence: 4, kindness: 9, humor: 7, creativity: 2 }, lookingFor: { kindness: 8, strength: 5 } },
-    { id: 7, imageUrl: 'MALE_PROFILE_7', properties: { strength: 5, intelligence: 5, kindness: 6, humor: 6, creativity: 5 }, lookingFor: { intelligence: 4, kindness: 5 } },
-    { id: 8, imageUrl: 'MALE_PROFILE_8', properties: { strength: 4, intelligence: 6, kindness: 7, humor: 3, creativity: 8 }, lookingFor: { creativity: 7, intelligence: 5 } },
-    { id: 9, imageUrl: 'MALE_PROFILE_9', properties: { strength: 2, intelligence: 7, kindness: 5, humor: 9, creativity: 6 }, lookingFor: { humor: 8, kindness: 4 } },
-    { id: 10, imageUrl: 'MALE_PROFILE_10', properties: { strength: 6, intelligence: 8, kindness: 4, humor: 5, creativity: 7 }, lookingFor: { strength: 5, intelligence: 7 } },
-    { id: 11, imageUrl: 'MALE_PROFILE_11', properties: { strength: 7, intelligence: 4, kindness: 8, humor: 6, creativity: 3 }, lookingFor: { kindness: 7, humor: 5 } },
-    { id: 12, imageUrl: 'MALE_PROFILE_12', properties: { strength: 3, intelligence: 9, kindness: 5, humor: 4, creativity: 8 }, lookingFor: { creativity: 6, intelligence: 8 } },
-    { id: 13, imageUrl: 'MALE_PROFILE_13', properties: { strength: 8, intelligence: 6, kindness: 7, humor: 2, creativity: 5 }, lookingFor: { strength: 6, kindness: 5 } },
-    { id: 14, imageUrl: 'MALE_PROFILE_14', properties: { strength: 5, intelligence: 7, kindness: 9, humor: 3, creativity: 4 }, lookingFor: { humor: 4, kindness: 8 } },
-    { id: 15, imageUrl: 'MALE_PROFILE_15', properties: { strength: 6, intelligence: 5, kindness: 4, humor: 7, creativity: 8 }, lookingFor: { intelligence: 4, creativity: 7 } },
-    { id: 16, properties: { strength: 9, intelligence: 3, kindness: 6, humor: 8, creativity: 2 }, lookingFor: { strength: 8, humor: 7 } },
-    { id: 17, properties: { strength: 4, intelligence: 8, kindness: 5, humor: 9, creativity: 3 }, lookingFor: { creativity: 4, intelligence: 7 } },
-    { id: 18, properties: { strength: 2, intelligence: 6, kindness: 8, humor: 4, creativity: 7 }, lookingFor: { kindness: 7, creativity: 5 } },
-    { id: 19, properties: { strength: 4, intelligence: 7, kindness: 3, humor: 8, creativity: 4 }, lookingFor: { intelligence: 6, strength: 7 } },
-    { id: 20, properties: { strength: 7, intelligence: 6, kindness: 4, humor: 6, creativity: 8 }, lookingFor: { strength: 6, humor: 5 } },
+  {
+    id: 1,
+    properties: { openMinded: "VERY_CONSERVATIVE", sector: "LITHUANIAN", age: 28 },
+    lookingFor: {
+      openMinded: ["VERY_CONSERVATIVE"],
+      sector: ["LITHUANIAN"],
+      age: { min: 26, max: 28 }
+    }
+  },
+  {
+    id: 2,
+    properties: { openMinded: "CONSERVATIVE", sector: "HASIDIC", age: 20 },
+    lookingFor: {
+      openMinded: ["VERY_CONSERVATIVE", "CONSERVATIVE"],
+      sector: ["HASIDIC"],
+      age: { min: 18, max: 19 }
+    }
+  },
+  {
+    id: 3,
+    properties: { openMinded: "MODERN", sector: "SFARADI", age: 32 },
+    lookingFor: {
+      openMinded: ["MODERN", "VERY_MODERN", "OPEN"],
+      sector: ["SFARADI"],
+      age: { min: 25, max: 30 }
+    }
+  },
+  {
+    id: 4,
+    properties: { openMinded: "VERY_MODERN", sector: "CHABAD", age: 30 },
+    lookingFor: {
+      openMinded: ["MODERN", "VERY_MODERN"],
+      sector: ["CHABAD", "MODERN"],
+      age: { min: 28, max: 32 }
+    }
+  },
+  {
+    id: 5,
+    properties: { openMinded: "CONSERVATIVE", sector: "YEMEN", age: 24 },
+    lookingFor: {
+      openMinded: ["CONSERVATIVE", "CONSERVATIVE_AND_OPEN_MIND"],
+      sector: ["YEMEN", "SFARADI"],
+      age: { min: 22, max: 26 }
+    }
+  },
+  {
+    id: 6,
+    properties: { openMinded: "CONSERVATIVE_AND_OPEN_MIND", sector: "HALF_HALF", age: 27 },
+    lookingFor: {
+      openMinded: ["CONSERVATIVE", "CONSERVATIVE_AND_OPEN_MIND", "OPEN"],
+      sector: ["HALF_HALF", "CHABAD"],
+      age: { min: 25, max: 29 }
+    }
+  },
+  {
+    id: 7,
+    properties: { openMinded: "OPEN", sector: "SFARADI", age: 29 },
+    lookingFor: {
+      openMinded: ["OPEN", "MODERN"],
+      sector: ["SFARADI", "YEMEN", "HALF_HALF"],
+      age: { min: 27, max: 31 }
+    }
+  },
+  {
+    id: 8,
+    properties: { openMinded: "VERY_CONSERVATIVE", sector: "HASIDIC", age: 22 },
+    lookingFor: {
+      openMinded: ["VERY_CONSERVATIVE", "CONSERVATIVE"],
+      sector: ["HASIDIC"],
+      age: { min: 20, max: 24 }
+    }
+  },
+  {
+    id: 9,
+    properties: { openMinded: "MODERN", sector: "LITHUANIAN", age: 26 },
+    lookingFor: {
+      openMinded: ["MODERN", "OPEN", "VERY_MODERN"],
+      sector: ["LITHUANIAN", "HALF_HALF"],
+      age: { min: 24, max: 28 }
+    }
+  },
+  {
+    id: 10,
+    properties: { openMinded: "VERY_MODERN", sector: "CHABAD", age: 35 },
+    lookingFor: {
+      openMinded: ["MODERN", "VERY_MODERN"],
+      sector: ["CHABAD", "HALF_HALF"],
+      age: { min: 33, max: 37 }
+    }
+  },
+  {
+    id: 11,
+    properties: { openMinded: "CONSERVATIVE", sector: "SFARADI", age: 23 },
+    lookingFor: {
+      openMinded: ["VERY_CONSERVATIVE", "CONSERVATIVE"],
+      sector: ["SFARADI", "YEMEN"],
+      age: { min: 21, max: 25 }
+    }
+  },
+  {
+    id: 12,
+    properties: { openMinded: "CONSERVATIVE", sector: "YEMEN", age: 31 },
+    lookingFor: {
+      openMinded: ["CONSERVATIVE_AND_OPEN_MIND", "CONSERVATIVE"],
+      sector: ["YEMEN", "SFARADI"],
+      age: { min: 29, max: 33 }
+    }
+  },
+  {
+    id: 13,
+    properties: { openMinded: "OPEN", sector: "HASIDIC", age: 28 },
+    lookingFor: {
+      openMinded: ["OPEN", "MODERN"],
+      sector: ["HASIDIC", "HALF_HALF"],
+      age: { min: 26, max: 30 }
+    }
+  },
+  {
+    id: 14,
+    properties: { openMinded: "VERY_CONSERVATIVE", sector: "CHABAD", age: 34 },
+    lookingFor: {
+      openMinded: ["VERY_CONSERVATIVE", "CONSERVATIVE"],
+      sector: ["CHABAD", "HASIDIC"],
+      age: { min: 32, max: 36 }
+    }
+  },
+  {
+    id: 15,
+    properties: { openMinded: "MODERN", sector: "LITHUANIAN", age: 30 },
+    lookingFor: {
+      openMinded: ["MODERN", "VERY_MODERN", "OPEN"],
+      sector: ["LITHUANIAN", "HALF_HALF"],
+      age: { min: 28, max: 32 }
+    }
+  },
+  {
+    id: 16,
+    properties: { openMinded: "VERY_MODERN", sector: "SFARADI", age: 25 },
+    lookingFor: {
+      openMinded: ["MODERN", "VERY_MODERN", "OPEN"],
+      sector: ["SFARADI", "HALF_HALF"],
+      age: { min: 23, max: 27 }
+    }
+  },
+  {
+    id: 17,
+    properties: { openMinded: "CONSERVATIVE_AND_OPEN_MIND", sector: "HASIDIC", age: 29 },
+    lookingFor: {
+      openMinded: ["CONSERVATIVE", "CONSERVATIVE_AND_OPEN_MIND"],
+      sector: ["HASIDIC", "CHABAD"],
+      age: { min: 27, max: 31 }
+    }
+  },
+  {
+    id: 18,
+    properties: { openMinded: "CONSERVATIVE", sector: "YEMEN", age: 21 },
+    lookingFor: {
+      openMinded: ["CONSERVATIVE"],
+      sector: ["YEMEN", "SFARADI"],
+      age: { min: 20, max: 23 }
+    }
+  },
+  {
+    id: 19,
+    properties: { openMinded: "VERY_CONSERVATIVE", sector: "SFARADI", age: 33 },
+    lookingFor: {
+      openMinded: ["VERY_CONSERVATIVE", "CONSERVATIVE"],
+      sector: ["SFARADI", "YEMEN"],
+      age: { min: 31, max: 35 }
+    }
+  },
+  {
+    id: 20,
+    properties: { openMinded: "MODERN", sector: "HALF_HALF", age: 26 },
+    lookingFor: {
+      openMinded: ["MODERN", "OPEN", "VERY_MODERN"],
+      sector: ["HALF_HALF", "CHABAD"],
+      age: { min: 24, max: 28 }
+    }
+  }
 ];
 
 const femaleCandidates = [
-    { id: 1, imageUrl: 'FEMALE_PROFILE_1', properties: { strength: 4, intelligence: 7, kindness: 8, humor: 6, creativity: 5 }, lookingFor: { strength: 5, intelligence: 6 } },
-    { id: 2, imageUrl: 'FEMALE_PROFILE_2', properties: { strength: 6, intelligence: 5, kindness: 9, humor: 4, creativity: 7 }, lookingFor: { kindness: 8, humor: 5 } },
-    { id: 3, imageUrl: 'FEMALE_PROFILE_3', properties: { strength: 3, intelligence: 8, kindness: 7, humor: 5, creativity: 6 }, lookingFor: { intelligence: 7, creativity: 4 } },
-    { id: 4, imageUrl: 'FEMALE_PROFILE_4', properties: { strength: 7, intelligence: 6, kindness: 5, humor: 8, creativity: 4 }, lookingFor: { humor: 7, kindness: 6 } },
-    { id: 5, imageUrl: 'FEMALE_PROFILE_5', properties: { strength: 5, intelligence: 4, kindness: 6, humor: 9, creativity: 8 }, lookingFor: { creativity: 7, humor: 6 } },
-    { id: 6, imageUrl: 'FEMALE_PROFILE_6', properties: { strength: 8, intelligence: 3, kindness: 4, humor: 7, creativity: 5 }, lookingFor: { strength: 7, intelligence: 4 } },
-    { id: 7, imageUrl: 'FEMALE_PROFILE_7', properties: { strength: 4, intelligence: 9, kindness: 5, humor: 6, creativity: 7 }, lookingFor: { intelligence: 8, creativity: 6 } },
-    { id: 8, imageUrl: 'FEMALE_PROFILE_8', properties: { strength: 5, intelligence: 6, kindness: 7, humor: 3, creativity: 8 }, lookingFor: { creativity: 7, kindness: 5 } },
-    { id: 9, imageUrl: 'FEMALE_PROFILE_9', properties: { strength: 6, intelligence: 5, kindness: 4, humor: 9, creativity: 3 }, lookingFor: { humor: 8, strength: 5 } },
-    { id: 10, imageUrl: 'FEMALE_PROFILE_10', properties: { strength: 7, intelligence: 8, kindness: 6, humor: 4, creativity: 5 }, lookingFor: { strength: 6, intelligence: 7 } },
-    { id: 11, imageUrl: 'FEMALE_PROFILE_11', properties: { strength: 3, intelligence: 6, kindness: 8, humor: 5, creativity: 9 }, lookingFor: { kindness: 7, creativity: 8 } },
-    { id: 12, imageUrl: 'FEMALE_PROFILE_12', properties: { strength: 5, intelligence: 7, kindness: 4, humor: 8, creativity: 6 }, lookingFor: { humor: 7, intelligence: 6 } },
-    { id: 13, imageUrl: 'FEMALE_PROFILE_13', properties: { strength: 8, intelligence: 4, kindness: 7, humor: 6, creativity: 5 }, lookingFor: { strength: 7, kindness: 6 } },
-    { id: 14, imageUrl: 'FEMALE_PROFILE_14', properties: { strength: 6, intelligence: 9, kindness: 5, humor: 4, creativity: 3 }, lookingFor: { intelligence: 8, humor: 4 } },
-    { id: 15, imageUrl: 'FEMALE_PROFILE_15', properties: { strength: 7, intelligence: 3, kindness: 6, humor: 5, creativity: 8 }, lookingFor: { creativity: 7, strength: 6 } },
-    { id: 16, properties: { strength: 4, intelligence: 8, kindness: 7, humor: 6, creativity: 4 }, lookingFor: { humor: 5, intelligence: 7 } },
-    { id: 17, properties: { strength: 5, intelligence: 7, kindness: 4, humor: 8, creativity: 6 }, lookingFor: { humor: 7, intelligence: 6 } },
-    { id: 18, properties: { strength: 6, intelligence: 4, kindness: 9, humor: 3, creativity: 5 }, lookingFor: { kindness: 8, creativity: 4 } },
-    { id: 19, properties: { strength: 7, intelligence: 6, kindness: 5, humor: 9, creativity: 7 }, lookingFor: { humor: 8, strength: 4 } },
-    { id: 20, properties: { strength: 6, intelligence: 5, kindness: 4, humor: 5, creativity: 3 }, lookingFor: { strength: 7, intelligence: 6 } },
+  {
+    id: 1,
+    properties: { openMinded: "VERY_CONSERVATIVE", sector: "LITHUANIAN", age: 27 },
+    lookingFor: {
+      openMinded: ["VERY_CONSERVATIVE", "CONSERVATIVE"],
+      sector: ["LITHUANIAN"],
+      age: { min: 27, max: 30 }
+    }
+  },
+  {
+    id: 2,
+    properties: { openMinded: "CONSERVATIVE", sector: "HASIDIC", age: 18 },
+    lookingFor: {
+      openMinded: ["CONSERVATIVE", "CONSERVATIVE_AND_OPEN_MIND"],
+      sector: ["HASIDIC"],
+      age: { min: 19, max: 20 }
+    }
+  },
+  {
+    id: 3,
+    properties: { openMinded: "MODERN", sector: "SFARADI", age: 29 },
+    lookingFor: {
+      openMinded: ["MODERN", "VERY_MODERN", "OPEN"],
+      sector: ["SFARADI", "YEMEN"],
+      age: { min: 30, max: 34 }
+    }
+  },
+  {
+    id: 4,
+    properties: { openMinded: "VERY_MODERN", sector: "CHABAD", age: 29 },
+    lookingFor: {
+      openMinded: ["MODERN", "VERY_MODERN"],
+      sector: ["CHABAD", "MODERN"],
+      age: { min: 28, max: 32 }
+    }
+  },
+  {
+    id: 5,
+    properties: { openMinded: "CONSERVATIVE", sector: "YEMEN", age: 23 },
+    lookingFor: {
+      openMinded: ["CONSERVATIVE", "CONSERVATIVE_AND_OPEN_MIND"],
+      sector: ["YEMEN", "SFARADI"],
+      age: { min: 22, max: 26 }
+    }
+  },
+  {
+    id: 6,
+    properties: { openMinded: "CONSERVATIVE_AND_OPEN_MIND", sector: "HALF_HALF", age: 26 },
+    lookingFor: {
+      openMinded: ["CONSERVATIVE", "CONSERVATIVE_AND_OPEN_MIND", "OPEN"],
+      sector: ["HALF_HALF", "CHABAD"],
+      age: { min: 25, max: 29 }
+    }
+  },
+  {
+    id: 7,
+    properties: { openMinded: "OPEN", sector: "SFARADI", age: 28 },
+    lookingFor: {
+      openMinded: ["OPEN", "MODERN"],
+      sector: ["SFARADI", "YEMEN", "HALF_HALF"],
+      age: { min: 27, max: 31 }
+    }
+  },
+  {
+    id: 8,
+    properties: { openMinded: "VERY_CONSERVATIVE", sector: "HASIDIC", age: 23 },
+    lookingFor: {
+      openMinded: ["VERY_CONSERVATIVE", "CONSERVATIVE"],
+      sector: ["HASIDIC"],
+      age: { min: 22, max: 25 }
+    }
+  },
+  {
+    id: 9,
+    properties: { openMinded: "MODERN", sector: "LITHUANIAN", age: 25 },
+    lookingFor: {
+      openMinded: ["MODERN", "OPEN", "VERY_MODERN"],
+      sector: ["LITHUANIAN", "HALF_HALF"],
+      age: { min: 24, max: 28 }
+    }
+  },
+  {
+    id: 10,
+    properties: { openMinded: "VERY_MODERN", sector: "CHABAD", age: 34 },
+    lookingFor: {
+      openMinded: ["MODERN", "VERY_MODERN"],
+      sector: ["CHABAD", "HALF_HALF"],
+      age: { min: 33, max: 37 }
+    }
+  },
+  {
+    id: 11,
+    properties: { openMinded: "CONSERVATIVE", sector: "SFARADI", age: 22 },
+    lookingFor: {
+      openMinded: ["VERY_CONSERVATIVE", "CONSERVATIVE"],
+      sector: ["SFARADI", "YEMEN"],
+      age: { min: 21, max: 25 }
+    }
+  },
+  {
+    id: 12,
+    properties: { openMinded: "CONSERVATIVE", sector: "YEMEN", age: 30 },
+    lookingFor: {
+      openMinded: ["CONSERVATIVE", "CONSERVATIVE_AND_OPEN_MIND"],
+      sector: ["YEMEN", "SFARADI"],
+      age: { min: 29, max: 33 }
+    }
+  },
+  {
+    id: 13,
+    properties: { openMinded: "OPEN", sector: "HASIDIC", age: 27 },
+    lookingFor: {
+      openMinded: ["OPEN", "MODERN"],
+      sector: ["HASIDIC", "HALF_HALF"],
+      age: { min: 26, max: 30 }
+    }
+  },
+  {
+    id: 14,
+    properties: { openMinded: "VERY_CONSERVATIVE", sector: "CHABAD", age: 33 },
+    lookingFor: {
+      openMinded: ["VERY_CONSERVATIVE", "CONSERVATIVE"],
+      sector: ["CHABAD", "HASIDIC"],
+      age: { min: 32, max: 36 }
+    }
+  },
+  {
+    id: 15,
+    properties: { openMinded: "MODERN", sector: "LITHUANIAN", age: 29 },
+    lookingFor: {
+      openMinded: ["MODERN", "VERY_MODERN", "OPEN"],
+      sector: ["LITHUANIAN", "HALF_HALF"],
+      age: { min: 28, max: 32 }
+    }
+  },
+  {
+    id: 16,
+    properties: { openMinded: "VERY_MODERN", sector: "SFARADI", age: 24 },
+    lookingFor: {
+      openMinded: ["MODERN", "VERY_MODERN", "OPEN"],
+      sector: ["SFARADI", "HALF_HALF"],
+      age: { min: 23, max: 27 }
+    }
+  },
+  {
+    id: 17,
+    properties: { openMinded: "CONSERVATIVE_AND_OPEN_MIND", sector: "HASIDIC", age: 28 },
+    lookingFor: {
+      openMinded: ["CONSERVATIVE", "CONSERVATIVE_AND_OPEN_MIND"],
+      sector: ["HASIDIC", "CHABAD"],
+      age: { min: 27, max: 31 }
+    }
+  },
+  {
+    id: 18,
+    properties: { openMinded: "CONSERVATIVE", sector: "YEMEN", age: 22 },
+    lookingFor: {
+      openMinded: ["CONSERVATIVE"],
+      sector: ["YEMEN", "SFARADI"],
+      age: { min: 21, max: 23 }
+    }
+  },
+  {
+    id: 19,
+    properties: { openMinded: "VERY_CONSERVATIVE", sector: "SFARADI", age: 32 },
+    lookingFor: {
+      openMinded: ["VERY_CONSERVATIVE", "CONSERVATIVE"],
+      sector: ["SFARADI", "YEMEN"],
+      age: { min: 31, max: 35 }
+    }
+  },
+  {
+    id: 20,
+    properties: { openMinded: "MODERN", sector: "HALF_HALF", age: 25 },
+    lookingFor: {
+      openMinded: ["MODERN", "OPEN", "VERY_MODERN"],
+      sector: ["HALF_HALF", "CHABAD"],
+      age: { min: 24, max: 28 }
+    }
+  }
 ];
