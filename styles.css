@@ -1,9 +1,10 @@
-html {
-    --color-blue: #09081e;
-    --color-gray: #e9ebf3;
-    --color-yellow: #ffd500;
-    --color-light-purple: #98aaf1;
-    --color-red: #ff7777;
+:root {
+  --random-delay: 0s;
+  --color-blue: #09081e;
+  --color-gray: #e9ebf3;
+  --color-yellow: #ffd500;
+  --color-light-purple: #98aaf1;
+  --color-red: #ff7777;
 }
 
 body, html {
@@ -34,6 +35,7 @@ body {
     height: 100%;
     gap:  50px;
     flex-wrap: wrap;
+    position: relative;
 }
 .section {
     flex: 1 1 0;
@@ -206,6 +208,54 @@ body {
   animation: slideDown 0.3s ease-in-out forwards;
 }
 
+/* ================game over ================== */
+.game-over-container {
+  display: none;
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+  z-index: 100;
+  background-color: var(--color-blue);
+  animation: fade-in 2s forwards;
+}
+.game-over-container .game-over {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+  /* background-color: var(--color-gray); */
+  padding: 50px 80px;
+  border-radius: 20px;
+  margin: auto;
+  color: white;
+}
+#play-again {
+  background-color: var(--color-yellow);
+  color: var(--color-blue);
+  border: none;
+  padding: 10px 60px;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 18px;
+  font-size: 2rem;
+}
+#play-again:hover {
+  background-color: var(--color-blue);
+  color: var(--color-yellow);
+}
+.game-over h1 {
+  color: #fff;
+  background: linear-gradient(90deg, var(--color-yellow), var(--color-light-purple), var(--color-gray));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite, blink 0.5s infinite;
+  text-align: center;
+  margin-bottom: auto;
+  font-size: 5rem;
+}
+
 /* ================ animations ================ */
 .rotate {
   transform-origin: center;
@@ -233,7 +283,7 @@ body {
 .zoom {
   animation: zoomInOut 4s ease-in-out infinite;
   transform-origin: center;
-  animation-delay: 3s;
+  animation-delay: var(--random-delay);
 }
 @keyframes zoomInOut {
   0% { transform: scale(1); }
@@ -252,22 +302,18 @@ body {
 
 .rotate-zoom {
     z-index: 100 !important;
-    animation: rotate-zoom 4s forwards, blink-opacity 0.1s 3.5s step-end 20;
+    animation: rotate-zoom 4s forwards, blink 0.1s 3.5s step-end 20;
 }
 @keyframes rotate-zoom {
   0% { transform: rotate(0deg) scale(0.2); }
   100% { transform: rotate(10000deg) scale(3); }
 }
 
-@keyframes blink-opacity {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
 .die-animation {
   z-index: 100 !important;
   animation: dieEffect 4s ease-out forwards;
 }
+
 @keyframes dieEffect {
   0% { transform: rotate(0deg) scale(4); opacity: 1; filter: hue-rotate(0deg); }
   50% { transform: rotate(90deg) scale(0.8); opacity: 0.8; filter: hue-rotate(90deg); }
@@ -281,4 +327,18 @@ body {
 @keyframes slideDown {
   from { transform: translateY(-100%); opacity: 0; }
   to { transform: translateY(0%); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }

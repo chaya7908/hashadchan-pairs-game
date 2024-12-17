@@ -1,7 +1,7 @@
 const WAIT_BEFORE_CHECK_MATCH_INDICATION = 10000;
 const RESET_AFTER_SUCCESS_MATCH = 5000;
 const RESET_AFTER_WRONG_MATCH = 4000;
-const GAME_TIMER_MINUTES = 2;
+const GAME_TIMER_MINUTES = 5;
 
 // ------------------------- COLORS -----------------------------------
 const originalColors = [
@@ -28,8 +28,8 @@ function initializeGame() {
   const maleSection = document.querySelector('.section.male');
   const femaleSection = document.querySelector('.section.female');
 
-  maleCandidates.forEach(male => maleSection.appendChild(createCard(male, 'MALE')));
-  femaleCandidates.forEach(female => femaleSection.appendChild(createCard(female, 'FEMALE')));
+  shuffleArray(maleCandidates).forEach(male => maleSection.appendChild(createCard(male, 'MALE')));
+  shuffleArray(femaleCandidates).forEach(female => femaleSection.appendChild(createCard(female, 'FEMALE')));
 
   initTimer();
 }
@@ -86,6 +86,7 @@ function initTimer() {
     if (timeInSeconds < 0) {
       clearInterval(timerInterval);
       updateTimerDisplay(0, 0); // Ensure it shows 00:00 at the end
+      gameOver();
     }
   }, 1000);
 }
@@ -237,6 +238,11 @@ function resetMatchState(firstCard, secondCard) {
   resetMatchAnimation();
 }
 
+function gameOver() {
+  const gameBoard = document.querySelector('.game-over-container');
+  gameBoard.style.display = 'block';
+}
+
 // ------------------------- LOGIC ------------------------------------
 function propertiesMatch(properties, lookingFor) {
   return Object.keys(lookingFor).every(key => {
@@ -300,3 +306,19 @@ function resetMatchAnimation() {
 
 
 initializeGame();
+
+// ------------------------ UTILS -----------------------------------
+function shuffleArray(array) {
+  if (getQueryParams().has('DEV')) return array;
+
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function getQueryParams() {
+  const params = new URLSearchParams(window.location.search);
+  return params;
+}
