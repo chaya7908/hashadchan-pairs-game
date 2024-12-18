@@ -5,6 +5,7 @@
   --color-yellow: #ffd500;
   --color-light-purple: #98aaf1;
   --color-red: #ff7777;
+  --logo-animation-duration: 8s;
 }
 
 body,
@@ -30,6 +31,24 @@ body {
   align-items: center;
   padding: 5px 20px;
   flex-direction: row;
+  position: relative;
+  padding: 5px 25px;
+}
+
+.header .logo-container {
+  position: relative;
+  cursor: pointer;
+  flex: 1;
+  display: flex;
+}
+
+.logo-container .logo:nth-child(1) {
+  animation: logoAnimation1 var(--logo-animation-duration) infinite;
+}
+.logo-container .logo:nth-child(2) {
+  margin-left: auto;
+  position: absolute;
+  animation: logoAnimation2 var(--logo-animation-duration) infinite;
 }
 
 .container {
@@ -238,6 +257,7 @@ body {
   align-items: center;
   font-size: 28px;
   color: var(--color-yellow);
+  margin-right: auto;
 }
 
 .digit {
@@ -502,6 +522,15 @@ body {
     opacity: 1;
   }
 }
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
 
 @keyframes brushEffect {
   0% {
@@ -510,5 +539,35 @@ body {
 
   100% {
     background-size: 100% 100%;
+  }
+}
+
+@keyframes logoAnimation2 {
+  0% {
+    right: 0;
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  99% {
+    right: 90%;
+    opacity: 0;
+  }
+  100% {
+    right: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes logoAnimation1 {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
   }
 }
