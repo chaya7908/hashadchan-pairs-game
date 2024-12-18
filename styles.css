@@ -7,132 +7,148 @@
   --color-red: #ff7777;
 }
 
-body, html {
-    margin: 0;
-    padding: 0;
-    min-height: 100%;
-    display: flex;
-    width: 100vw;
-    background-color: var(--color-gray);
+body,
+html {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  display: flex;
+  width: 100vw;
+  background-color: var(--color-gray);
 }
 
 /* ================ page layout ================ */
 body {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
+
 .header {
-    background-color: var(--color-blue);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 20px;
-    flex-direction: row;
+  background-color: var(--color-blue);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 20px;
+  flex-direction: row;
 }
+
 .container {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    gap:  50px;
-    flex-wrap: wrap;
-    position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  gap: 50px;
+  flex-wrap: wrap;
+  position: relative;
 }
+
 .section {
-    flex: 1 1 0;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(4, auto);
+  flex: 1 1 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, auto);
 
-    grid-template-columns: repeat(5, minmax(100px, 150px));
-    grid-template-rows: repeat(4, minmax(120px, 1fr));
+  grid-template-columns: repeat(5, minmax(100px, 150px));
+  grid-template-rows: repeat(4, minmax(120px, 1fr));
 
-    gap: 10px;
-    padding: 20px;
-    box-sizing: border-box;
-    position: relative;
-    z-index: 10;
+  gap: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
 }
+
 #match-animation {
-    position: relative;
-    flex-basis: 200px;
-    z-index: 1;
-    width: 200px;
-    margin: auto -100px;
+  position: relative;
+  flex-basis: 200px;
+  z-index: 1;
+  width: 200px;
+  margin: auto -100px;
 }
+
 #match-animation img {
-    width: 100%;
+  width: 100%;
 }
 
 @media (max-width: 1300px) {
-    .section {
-        flex: 1 0 100%;
-    }
-    #match-animation {
-        margin: -100px auto;
-    }
+  .section {
+    flex: 1 0 100%;
+  }
+
+  #match-animation {
+    margin: -100px auto;
+  }
 }
 
 /* ================ card basic style ================ */
 .card {
-    perspective: 1000px;
-    background-color: white;
-    border-radius: 1rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.5s ease, box-shadow 0.5s ease, background-color 3s ease;
-    overflow: hidden;
+  perspective: 1000px;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.5s ease, box-shadow 0.5s ease, background-color 3s ease;
+  overflow: hidden;
 }
+
 .card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.6s;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
 }
+
 .card.flipped .card-inner {
-    transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
-.card-front, .card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* ================ style of card front image ================ */
 .card-front .image-container {
-    width:  100%;
-    height: 100%;
-    display: flex;
+  width: 100%;
+  height: 100%;
+  display: flex;
 }
+
 .card-front .image-container {
-    transition: all 0.5s ease, box-shadow 0.5s ease;
+  transition: all 0.5s ease, box-shadow 0.5s ease;
 }
-.card-front .image-container > img {
-    width: 80%;
-    margin: auto;
+
+.card-front .image-container>img {
+  width: 80%;
+  margin: auto;
 }
+
 .card-front .emoji-container {
-    padding-top: 75%;
-    display: none;
-    width: 100%;
-    height: 100%;
-    position: relative;
+  padding-top: 75%;
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
+
 .card:not(.flipped):hover {
-    cursor: pointer;
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
+
 .card:not(.flipped):hover .image-container {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 .card-back {
-    transform: rotateY(180deg);
-    text-align: center;
+  transform: rotateY(180deg);
+  text-align: center;
 }
 
 /* ============= style of card back ============= */
@@ -141,10 +157,32 @@ body {
   gap: 40px;
   flex-direction: column;
 }
+
 .card-back .property {
   display: flex;
   margin-bottom: 5px;
-  /* justify-content: space-between; */
+  position: relative;
+  padding: 2px 10px;
+  margin-right: -10px;
+}
+
+.highlight-match::before,
+.highlight-no-match:before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  clip-path: var(--clip-path);
+}
+
+.highlight-match::before {
+  background: var(--color-yellow);
+}
+.highlight-no-match::before {
+  background: var(--color-red);
 }
 
 .card-back .title {
@@ -156,33 +194,34 @@ body {
 }
 
 .card-back .property .key {
-  font-weight:800;
+  font-weight: 800;
   margin-left: 10px;
 }
 
 /* ================ actvie card ================ */
 .card.active {
-    position: absolute;
-    width: 70%;
-    height: 70%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-    background-color: var(--color-light-purple);
-    box-shadow: 0 8px 16px 20px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background-color: var(--color-light-purple);
+  box-shadow: 0 8px 16px 20px rgba(0, 0, 0, 0.2);
 }
+
 .placeholder {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 /* ================ matched card ================ */
 .card.matched:hover .image-container {
-    display: none;
+  display: none;
 }
 
 .card.matched:hover .emoji-container {
-    display: block;
+  display: block;
 }
 
 
@@ -195,15 +234,19 @@ body {
   font-size: 28px;
   color: var(--color-yellow);
 }
+
 .digit {
   display: inline-block;
   min-width: 20px;
   position: relative;
-  overflow: hidden; /* Ensures content outside the bounds is hidden */
+  overflow: hidden;
+  /* Ensures content outside the bounds is hidden */
 }
+
 .digit.new {
   animation: slideUp 0.3s ease-in-out forwards;
 }
+
 .digit.old {
   animation: slideDown 0.3s ease-in-out forwards;
 }
@@ -218,6 +261,7 @@ body {
   background-color: var(--color-blue);
   animation: fade-in 2s forwards;
 }
+
 .game-over-container .game-over {
   display: flex;
   flex-direction: column;
@@ -230,6 +274,7 @@ body {
   margin: auto;
   color: white;
 }
+
 #play-again {
   background-color: var(--color-yellow);
   color: var(--color-blue);
@@ -240,10 +285,12 @@ body {
   font-size: 18px;
   font-size: 2rem;
 }
+
 #play-again:hover {
   background-color: var(--color-blue);
   color: var(--color-yellow);
 }
+
 .game-over h1 {
   color: #fff;
   background: linear-gradient(90deg, var(--color-yellow), var(--color-light-purple), var(--color-gray));
@@ -261,9 +308,15 @@ body {
   transform-origin: center;
   animation: rotate 3s linear infinite;
 }
+
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 
@@ -271,13 +324,31 @@ body {
   animation: swing 10s infinite;
   animation-delay: var(--random-delay);
 }
+
 @keyframes swing {
-  0% { transform: rotate(0deg) }
-  15% { transform: rotate(-15deg) }
-  30% { transform: rotate(0deg) }
-  45% { transform: rotate(15deg) }
-  60% { transform: rotate(0deg) }
-  100% { transform: rotate(0deg) }
+  0% {
+    transform: rotate(0deg)
+  }
+
+  15% {
+    transform: rotate(-15deg)
+  }
+
+  30% {
+    transform: rotate(0deg)
+  }
+
+  45% {
+    transform: rotate(15deg)
+  }
+
+  60% {
+    transform: rotate(0deg)
+  }
+
+  100% {
+    transform: rotate(0deg)
+  }
 }
 
 .zoom {
@@ -285,28 +356,69 @@ body {
   transform-origin: center;
   animation-delay: var(--random-delay);
 }
+.zoom-once {
+  animation: zoomInOutOnce 1s ease-in-out;
+  animation-delay: var(--random-delay);
+}
+
+@keyframes zoomInOutOnce {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
 @keyframes zoomInOut {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.5); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .blink-bg-color {
   animation: blink 0.5s infinite;
   background-color: var(--blink-color, #98aaf1) !important;
 }
+
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
 .rotate-zoom {
-    z-index: 100 !important;
-    animation: rotate-zoom 4s forwards, blink 0.1s 3.5s step-end 20;
+  z-index: 100 !important;
+  animation: rotate-zoom 4s forwards, blink 0.1s 3.5s step-end 20;
 }
+
 @keyframes rotate-zoom {
-  0% { transform: rotate(0deg) scale(0.2); }
-  100% { transform: rotate(10000deg) scale(3); }
+  0% {
+    transform: rotate(0deg) scale(0.2);
+  }
+
+  100% {
+    transform: rotate(10000deg) scale(3);
+  }
 }
 
 .die-animation {
@@ -315,30 +427,75 @@ body {
 }
 
 @keyframes dieEffect {
-  0% { transform: rotate(0deg) scale(4); opacity: 1; filter: hue-rotate(0deg); }
-  50% { transform: rotate(90deg) scale(0.8); opacity: 0.8; filter: hue-rotate(90deg); }
-  100% { transform: rotate(180deg) scale(0); opacity: 0; filter: hue-rotate(180deg); }
+  0% {
+    transform: rotate(0deg) scale(4);
+    opacity: 1;
+    filter: hue-rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(90deg) scale(0.8);
+    opacity: 0.8;
+    filter: hue-rotate(90deg);
+  }
+
+  100% {
+    transform: rotate(180deg) scale(0);
+    opacity: 0;
+    filter: hue-rotate(180deg);
+  }
 }
 
 @keyframes slideUp {
-  from { transform: translateY(100%); opacity: 0; }
-  to { transform: translateY(0%); opacity: 1; }
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+  }
 }
+
 @keyframes slideDown {
-  from { transform: translateY(-100%); opacity: 0; }
-  to { transform: translateY(0%); opacity: 1; }
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+  }
 }
 
 @keyframes shimmer {
   0% {
     background-position: 0% 50%;
   }
+
   100% {
     background-position: 200% 50%;
   }
 }
 
 @keyframes fade-in {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes brushEffect {
+  0% {
+    background-size: 0% 100%;
+  }
+
+  100% {
+    background-size: 100% 100%;
+  }
 }

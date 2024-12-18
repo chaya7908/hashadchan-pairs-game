@@ -1,4 +1,4 @@
-const WAIT_BEFORE_CHECK_MATCH_INDICATION = 10000;
+const WAIT_BEFORE_CHECK_MATCH_INDICATION = 1000;
 const RESET_AFTER_SUCCESS_MATCH = 5000;
 const RESET_AFTER_WRONG_MATCH = 4000;
 const GAME_TIMER_MINUTES = 5;
@@ -128,7 +128,7 @@ function createCard(candidate, type) {
   for (const [key, value] of Object.entries(candidate.properties)) {
     if (value !== undefined) {
       const translatedValue = TRANSLATION[`${type}_${value}`] || TRANSLATION[value] || value;
-      propertiesHTML += `<div class='property'><span class='key'>${TRANSLATION[key] || key}:</span><span class='value'>${translatedValue}<span></div>`;
+      propertiesHTML += `<div class='property property-${key}'><span class='key'>${TRANSLATION[key] || key}:</span><span class='value'>${translatedValue}<span></div>`;
     }
   }
 
@@ -145,7 +145,7 @@ function createCard(candidate, type) {
           return TRANSLATION[`${lookingForType}_${v}`] || TRANSLATION[v] || v;
         }).join(', ');
       }
-      lookingForHTML += `<div class='property'><span class='key'>${TRANSLATION[key] || key}:</span><span class='value'>${valueString}<span></div>`;
+      lookingForHTML += `<div class='property looking-for-${key}'><span class='key'>${TRANSLATION[key] || key}:</span><span class='value'>${valueString}<span></div>`;
     }
   }
 
@@ -244,32 +244,80 @@ function gameOver() {
 }
 
 // ------------------------- LOGIC ------------------------------------
-function propertiesMatch(properties, lookingFor) {
-  return Object.keys(lookingFor).every(key => {
-    if (Array.isArray(lookingFor[key])) {
-      return lookingFor[key].includes(properties[key]);
-    }
+function propertyMatch(prop, lookingFor) {
+  if (Array.isArray(lookingFor)) {
+    return lookingFor.includes(prop);
+  }
 
-    if (lookingFor[key].min) {
-      return properties[key] >= lookingFor[key].min && properties[key] <= lookingFor[key].max;
-    }
-    
-    else return properties[key] === lookingFor[key]
-  });
+  if (lookingFor.min) {
+    return prop >= lookingFor.min && prop <= lookingFor.max;
+  }
+
+  else return prop === lookingFor
 }
 
-function checkMatch(firstCard, secondCard) {
+async function checkMatch(firstCard, secondCard) {
   const firstCandidate = firstCard.dataset.type === 'MALE' ? maleCandidates[firstCard.dataset.id - 1] : femaleCandidates[firstCard.dataset.id - 1];
   const secondCandidate = secondCard.dataset.type === 'FEMALE' ? femaleCandidates[secondCard.dataset.id - 1] : maleCandidates[secondCard.dataset.id - 1];
 
   if (firstCandidate && secondCandidate) {
-    const match = propertiesMatch(firstCandidate.properties, secondCandidate.lookingFor) && propertiesMatch(secondCandidate.properties, firstCandidate.lookingFor);
-
-    setTimeout(() => {
-      (match ? onSucessMatch : onFailureMatch)(firstCard, secondCard)
+    setTimeout(async () => {
+      const match = await highlightMatches(firstCard, secondCard);
+      setTimeout(() =>
+        (match ? onSucessMatch : onFailureMatch)(firstCard, secondCard)
+        , 1000);
     }, WAIT_BEFORE_CHECK_MATCH_INDICATION);
   }
 }
+
+async function highlightMatches(card1, card2) {
+  const [maleCard, femaleCard] = card1.dataset.type === 'MALE' ? [card1, card2] : [card2, card1];
+  let counter = 1;
+
+  function animateBrush(element, className) {
+    element.style = `--clip-path: url(#clip-indefinite-${counter})`;
+    element.classList.add(className);
+    element.classList.add('zoom-once');
+    document.getElementById(`anim-${counter}`).beginElement();
+    counter = counter+1;
+  }
+
+  async function highlight(firstCard, secondCard) {
+    const firstCandidate = firstCard.dataset.type === 'MALE' ? maleCandidates[firstCard.dataset.id - 1] : femaleCandidates[firstCard.dataset.id - 1];
+    const secondCandidate = secondCard.dataset.type === 'FEMALE' ? femaleCandidates[secondCard.dataset.id - 1] : maleCandidates[secondCard.dataset.id - 1];
+
+    for (const [key, lookingForValue] of Object.entries(firstCandidate.lookingFor)) {
+      const lookingForElement = firstCard.querySelector(`.looking-for-${key}`);
+      const propertyElement = secondCard.querySelector(`.property-${key}`);
+
+      const isMatch = propertyMatch(secondCandidate.properties[key], lookingForValue);
+
+      if (propertyElement) {
+        if (isMatch) {
+          animateBrush(lookingForElement, 'highlight-match');
+          await delay(500);
+          animateBrush(propertyElement, 'highlight-match');
+          await delay(2000);
+        } else {
+          animateBrush(lookingForElement, 'highlight-no-match');
+          await delay(500);
+          animateBrush(propertyElement, 'highlight-no-match');
+          await delay(2000);
+        }
+      }
+
+      if (!isMatch) return false;
+    }
+    
+    return true;
+  }
+
+  const match1 = await highlight(maleCard, femaleCard);
+  const match2 = match1 && await highlight(femaleCard, maleCard);
+
+  return match1 && match2;
+}
+
 
 // ------------------------ ACTIONS -----------------------------------
 function blink(elements, color) {
@@ -321,4 +369,8 @@ function shuffleArray(array) {
 function getQueryParams() {
   const params = new URLSearchParams(window.location.search);
   return params;
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
