@@ -280,6 +280,7 @@ async function highlightMatches(card1, card2) {
     element.classList.add('zoom-once');
     document.getElementById(`anim-${counter}`).beginElement();
     counter = counter+1;
+    playGameSound('check');
   }
 
   async function highlight(firstCard, secondCard) {
@@ -351,6 +352,43 @@ function resetMatchAnimation() {
   document.getElementById('match-animation').classList.remove('die-animation')
   document.getElementById('match-animation').classList.remove('rotate-zoom')
 }
+
+
+function playGameSound(type, pauseBg = false) {
+  // if (pauseBg) {
+  //   gameBgSound.pause();
+  // } else {
+  //   gameBgSound.volume = 0.1;
+  // }
+
+  let path = '';
+  let volume = 1;
+  switch (type) {
+    case 'check':
+      volume = 0.7;
+      path = './sounds/check2.mp3';
+      break;
+    case 'wrong':
+      path = './sounds/wrong.mp3';
+      break;
+    case 'flip':
+      path = './sounds/tada.mp3';
+      break;
+    case 'feedback':
+      path = './sounds/claps.mp3';
+      break;
+    default:
+      break;
+  }
+  var audio = new Audio(path);
+  audio.volume = volume;
+  audio.play();
+  audio.onended = () => {
+    // console.log('gameBgSound.volume = 0.5;')
+    // gameBgSound.volume = 0.5;
+    // gameBgSound.play();
+  }
+};
 
 
 initializeGame();
