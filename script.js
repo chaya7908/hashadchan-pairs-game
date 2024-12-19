@@ -1,4 +1,5 @@
-const WAIT_BEFORE_CHECK_MATCH_INDICATION = 2000;
+const WAIT_BEFORE_START_HIGHLIGHTS = 2000;
+const WAIT_AFTER_HIGHLIGHTS = 2000;
 const RESET_AFTER_SUCCESS_MATCH = 5000;
 const RESET_AFTER_WRONG_MATCH = 3000;
 const GAME_TIMER_MINUTES = 5;
@@ -272,10 +273,11 @@ async function checkMatch(firstCard, secondCard) {
   const secondCandidate = secondCard.dataset.type === 'FEMALE' ? femaleCandidates[secondCard.dataset.id - 1] : maleCandidates[secondCard.dataset.id - 1];
 
   if (firstCandidate && secondCandidate) {
-    setTimeout(async () => {
-      const match = await highlightMatches(firstCard, secondCard);
-      (match ? onSucessMatch : onFailureMatch)(firstCard, secondCard);
-    }, WAIT_BEFORE_CHECK_MATCH_INDICATION);
+    await delay(WAIT_BEFORE_START_HIGHLIGHTS);
+
+    const match = await highlightMatches(firstCard, secondCard);
+    await delay(WAIT_AFTER_HIGHLIGHTS);
+    (match ? onSucessMatch : onFailureMatch)(firstCard, secondCard);
   }
 }
 
