@@ -466,7 +466,7 @@ body {
 }
 
 .blink-bg-color {
-  animation: blink 0.5s infinite;
+  animation: blink 1s infinite;
   background-color: var(--blink-color, #98aaf1) !important;
 }
 
