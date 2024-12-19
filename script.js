@@ -123,29 +123,30 @@ function createCard(candidate, type) {
   const cardBack = document.createElement('div');
   cardBack.classList.add('card-back');
 
-  // Dynamically create properties HTML
   let propertiesHTML = '<div class="title">מי אני?</div>';
-  for (const [key, value] of Object.entries(candidate.properties)) {
+  let lookingForHTML = `<div class="title">מה אני ${type === 'MALE' ? 'מחפש' : 'מחפשת'}:</div>`;
+
+  for (const prop of SUPPORTED_PROPS) {
+    // create property HTML
+    const value = candidate.properties[prop];
     if (value !== undefined) {
       const translatedValue = TRANSLATION[`${type}_${value}`] || TRANSLATION[value] || value;
-      propertiesHTML += `<div class='property property-${key}'><span class='key'>${TRANSLATION[key] || key}:</span><span class='value'>${translatedValue}<span></div>`;
+      propertiesHTML += `<div class='property property-${prop}'><span class='key'>${TRANSLATION[prop] || prop}:</span><span class='value'>${translatedValue}<span></div>`;
     }
-  }
 
-  // Dynamically create looking for HTML
-  let lookingForHTML = `<div class="title">מה אני ${type === 'MALE' ? 'מחפש' : 'מחפשת'}:</div>`;
-  for (const [key, value] of Object.entries(candidate.lookingFor)) {
-    if (value !== undefined) {
-      let valueString = TRANSLATION[value] || value;
+    // create looking for HTML
+    const lookingForValue = candidate.lookingFor[prop];
+    if (lookingForValue !== undefined) {
+      let lookingForValueString = TRANSLATION[lookingForValue] || lookingForValue;
       // age
-      if (value.min) {
-        valueString = `${value.max} - ${value.min}`;
-      } else if (Array.isArray(value)) {
-        valueString = value.map(v => {
+      if (lookingForValue.min) {
+        lookingForValueString = `${lookingForValue.max} - ${lookingForValue.min}`;
+      } else if (Array.isArray(lookingForValue)) {
+        lookingForValueString = lookingForValue.map(v => {
           return TRANSLATION[`${lookingForType}_${v}`] || TRANSLATION[v] || v;
-        }).join(', ');
+        }).join(' \\ ');
       }
-      lookingForHTML += `<div class='property looking-for-${key}'><span class='key'>${TRANSLATION[key] || key}:</span><span class='value'>${valueString}<span></div>`;
+      lookingForHTML += `<div class='property looking-for-${prop}'><span class='key'>${TRANSLATION[prop] || prop}:</span><span class='value'>${lookingForValueString}<span></div>`;
     }
   }
 
@@ -287,11 +288,12 @@ async function highlightMatches(card1, card2) {
     const firstCandidate = firstCard.dataset.type === 'MALE' ? maleCandidates[firstCard.dataset.id - 1] : femaleCandidates[firstCard.dataset.id - 1];
     const secondCandidate = secondCard.dataset.type === 'FEMALE' ? femaleCandidates[secondCard.dataset.id - 1] : maleCandidates[secondCard.dataset.id - 1];
 
-    for (const [key, lookingForValue] of Object.entries(firstCandidate.lookingFor)) {
-      const lookingForElement = firstCard.querySelector(`.looking-for-${key}`);
-      const propertyElement = secondCard.querySelector(`.property-${key}`);
+    for (const prop of SUPPORTED_PROPS) {
+      const lookingForValue = firstCandidate.lookingFor[prop];
+      const lookingForElement = firstCard.querySelector(`.looking-for-${prop}`);
+      const propertyElement = secondCard.querySelector(`.property-${prop}`);
 
-      const isMatch = propertyMatch(secondCandidate.properties[key], lookingForValue);
+      const isMatch = propertyMatch(secondCandidate.properties[prop], lookingForValue);
 
       if (propertyElement) {
         if (isMatch) {
