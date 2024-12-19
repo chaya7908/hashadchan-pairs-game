@@ -33,6 +33,7 @@ body {
   flex-direction: row;
   position: relative;
   padding: 5px 25px;
+  border-bottom: 1px solid var(--color-gray);
 }
 
 .header .logo-container {
@@ -175,7 +176,16 @@ body {
   display: flex;
   gap: 40px;
   flex-direction: column;
+  align-items: flex-start;
 }
+
+.card-details .name {
+  font-size: 32px;
+  text-align: right;
+  position: relative;
+  padding: 3px 15px;
+}
+
 .card-details .properties, .card-back .looking-for {
   display: flex;
   flex-direction: column;
@@ -190,8 +200,7 @@ body {
   margin-right: -10px;
 }
 
-.highlight-match::before,
-.highlight-no-match:before {
+.brush-highlight::before {
   content: '';
   position: absolute;
   height: 100%;
@@ -202,11 +211,14 @@ body {
   clip-path: var(--clip-path);
 }
 
-.highlight-match::before {
+.highlight-yellow::before {
   background: var(--color-yellow);
 }
-.highlight-no-match::before {
+.highlight-red::before {
   background: var(--color-red);
+}
+.highlight-natural::before {
+  background: var(--color-gray);
 }
 
 .card-back .title {
@@ -390,7 +402,7 @@ body {
   animation-delay: var(--random-delay);
 }
 .zoom-once {
-  animation: zoomInOutOnce 1s ease-in-out;
+  animation: zoomInOutOnce var(--anim-duration, 1s) ease-in-out;
   animation-delay: var(--random-delay);
 }
 

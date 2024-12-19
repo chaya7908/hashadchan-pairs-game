@@ -1,7 +1,8 @@
-const WAIT_BEFORE_CHECK_MATCH_INDICATION = 1000;
+const WAIT_BEFORE_CHECK_MATCH_INDICATION = 2000;
 const RESET_AFTER_SUCCESS_MATCH = 5000;
-const RESET_AFTER_WRONG_MATCH = 4000;
+const RESET_AFTER_WRONG_MATCH = 3000;
 const GAME_TIMER_MINUTES = 5;
+const WAIT_BETWEEN_PROP_CHECK = 600;
 
 // ------------------------- COLORS -----------------------------------
 const originalColors = [
@@ -22,6 +23,7 @@ function getColor() {
 let firstChoosenCard = null;
 let canClick = true;
 
+const bruchAnimationsStack = [];
 
 // ------------------------- BUILD GAME BOARD -------------------------
 function initializeGame() {
@@ -32,6 +34,7 @@ function initializeGame() {
   shuffleArray(femaleCandidates).forEach(female => femaleSection.appendChild(createCard(female, 'FEMALE')));
 
   initTimer();
+  genereateBrushAnimations();
 }
 
 function initTimer() {
@@ -150,7 +153,11 @@ function createCard(candidate, type) {
     }
   }
 
-  cardBack.innerHTML = `<div class='card-details'><div class='properties'>${propertiesHTML}</div><div class='looking-for'>${lookingForHTML}</div></div>`;
+  cardBack.innerHTML = `<div class='card-details'>
+    <div class='name' style="--anim-duration: 4s">${candidate.firstName} ${candidate.lastName}</div>
+    <div class='properties'>${propertiesHTML}</div>
+    <div class='looking-for'>${lookingForHTML}</div>
+  </div>`;
 
   cardInner.appendChild(cardFront);
   cardInner.appendChild(cardBack);
@@ -184,12 +191,15 @@ function onCardClicked(card) {
   card.classList.toggle('active');
   card.classList.toggle('flipped');
 
+  
   // handle click event
   if (firstChoosenCard) {
     canClick = false;
     checkMatch(firstChoosenCard, card);
+    onCardOpened(card, 1);
   } else {
     firstChoosenCard = card;
+    onCardOpened(card, 2);
   }
 }
 
@@ -264,9 +274,7 @@ async function checkMatch(firstCard, secondCard) {
   if (firstCandidate && secondCandidate) {
     setTimeout(async () => {
       const match = await highlightMatches(firstCard, secondCard);
-      setTimeout(() => {
-        (match ? onSucessMatch : onFailureMatch)(firstCard, secondCard);
-      }, 1000);
+      (match ? onSucessMatch : onFailureMatch)(firstCard, secondCard);
     }, WAIT_BEFORE_CHECK_MATCH_INDICATION);
   }
 }
@@ -274,15 +282,6 @@ async function checkMatch(firstCard, secondCard) {
 async function highlightMatches(card1, card2) {
   const [maleCard, femaleCard] = card1.dataset.type === 'MALE' ? [card1, card2] : [card2, card1];
   let counter = 1;
-
-  function animateBrush(element, className) {
-    element.style = `--clip-path: url(#clip-indefinite-${counter})`;
-    element.classList.add(className);
-    element.classList.add('zoom-once');
-    document.getElementById(`anim-${counter}`).beginElement();
-    counter = counter+1;
-    playGameSound('check');
-  }
 
   async function highlight(firstCard, secondCard) {
     const firstCandidate = firstCard.dataset.type === 'MALE' ? maleCandidates[firstCard.dataset.id - 1] : femaleCandidates[firstCard.dataset.id - 1];
@@ -297,15 +296,15 @@ async function highlightMatches(card1, card2) {
 
       if (propertyElement) {
         if (isMatch) {
-          animateBrush(lookingForElement, 'highlight-match');
+          animateBrush(lookingForElement, 'yellow');
           await delay(500);
-          animateBrush(propertyElement, 'highlight-match');
-          await delay(2000);
+          animateBrush(propertyElement, 'yellow');
+          await delay(WAIT_BETWEEN_PROP_CHECK);
         } else {
-          animateBrush(lookingForElement, 'highlight-no-match');
+          animateBrush(lookingForElement, 'red');
           await delay(500);
-          animateBrush(propertyElement, 'highlight-no-match');
-          await delay(2000);
+          animateBrush(propertyElement, 'red');
+          await delay(WAIT_BETWEEN_PROP_CHECK);
         }
       }
 
@@ -324,8 +323,7 @@ async function highlightMatches(card1, card2) {
 function resetHighlights() {
   document.querySelectorAll('.property').forEach(element => {
     element.classList.remove('zoom-once');
-    element.classList.remove('highlight-match');
-    element.classList.remove('highlight-no-match');
+    element.classList.remove('brush-highlight');
   });
 }
 
@@ -362,6 +360,12 @@ function resetMatchAnimation() {
   document.getElementById('match-animation').classList.remove('rotate-zoom')
 }
 
+function onCardOpened(card, cardNumber) {
+  setTimeout(() => {
+    const nameElement = card.querySelector('.name');
+    animateBrush(nameElement, 'natural', false);
+  }, 500);
+}
 
 function playGameSound(type, pauseBg = false) {
   // if (pauseBg) {
@@ -399,8 +403,25 @@ function playGameSound(type, pauseBg = false) {
   }
 };
 
-
 initializeGame();
+
+// ------------------------ ANIMATIONS -----------------------------------
+
+function animateBrush(element, color, playSound = true) {
+  const id = getAnimationBrushId();
+
+  element.style.setProperty('--clip-path', `url(#clip-indefinite-${id})`);
+  
+  element.classList.add('zoom-once');
+  element.classList.add('brush-highlight');
+  element.classList.add(`highlight-${color}`);
+  
+  document.getElementById(`anim-${id}`).beginElement();
+  
+  if (playSound) {
+    playGameSound('check');
+  }
+}
 
 // ------------------------ UTILS -----------------------------------
 function shuffleArray(array) {
@@ -420,4 +441,32 @@ function getQueryParams() {
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function generateRandomId() {
+  return 'id-' + Math.random().toString(36).substring(2, 15);
+}
+
+
+function genereateBrushAnimations() {
+  for (let i = 0; i < 10; i++) {
+    genereateBrushAnimation();
+  }
+}
+
+function genereateBrushAnimation() {
+  const id = generateRandomId();
+  const svgString = BRUSH_SVG.replaceAll('{{id}}', id);
+  const parser = new DOMParser();
+  const svgDoc = parser.parseFromString(svgString, "image/svg+xml");
+  const svgElement = svgDoc.documentElement;
+  document.body.appendChild(svgElement);
+  bruchAnimationsStack.unshift(id);
+}
+
+function getAnimationBrushId() {
+  console.log(bruchAnimationsStack)
+  const id = bruchAnimationsStack.pop();
+  genereateBrushAnimation();
+  return id;
 }
