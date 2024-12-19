@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Card Matching Game</title>
+  <title>לא קל להיות שדכן</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="emojies.css">
 </head>
@@ -135,9 +135,12 @@
     </div>
     <div class="game-over-container">
       <div class="game-over">
-        <h1>לא קל להיות שדכן...</h1>
-        <h1>הזמן שלך נגמר :(</h1>
-        <button id="play-again" onClick="window.location.reload()">רוצה לנסות שוב</button>
+        <h1 class="text-2">הזמן שלך נגמר :(</h1>
+        <h1 class="text-1">לא קל להיות שדכן...</h1>
+        <div class="buttons">
+          <button id="play-again" onClick="window.location.reload()">רוצה לנסות שוב</button>
+          <button id="go-to-site" onClick="window.location = 'https://hashadchan.co.il/?utm_source=memory_game&utm_medium=site'">רוצה לחפש ב'שדכן'</button>
+        </div>
       </div>
     </div>
   </div>

@@ -1,9 +1,9 @@
 const WAIT_BEFORE_START_HIGHLIGHTS = 2000;
+const WAIT_BETWEEN_PROP_CHECK = 600;
 const WAIT_AFTER_HIGHLIGHTS = 2000;
 const RESET_AFTER_SUCCESS_MATCH = 5000;
 const RESET_AFTER_WRONG_MATCH = 3000;
-const GAME_TIMER_MINUTES = 5;
-const WAIT_BETWEEN_PROP_CHECK = 600;
+const GAME_TIMER_MINUTES = 7;
 
 // ------------------------- COLORS -----------------------------------
 const originalColors = [
@@ -250,9 +250,15 @@ function resetMatchState(firstCard, secondCard) {
   resetMatchAnimation();
 }
 
-function gameOver() {
+async function gameOver() {
   const gameBoard = document.querySelector('.game-over-container');
   gameBoard.style.display = 'block';
+  const text = document.querySelector('.text-2');
+  await delay(500);
+  animateBrush(text, 'red', 3, false);
+  setInterval(() => {
+    animateBrush(text, 'red', 3, false);
+  }, 4000);
 }
 
 // ------------------------- LOGIC ------------------------------------
@@ -365,7 +371,7 @@ function resetMatchAnimation() {
 function onCardOpened(card, cardNumber) {
   setTimeout(() => {
     const nameElement = card.querySelector('.name');
-    animateBrush(nameElement, 'natural', false);
+    animateBrush(nameElement, 'natural', 1, false);
   }, 500);
 }
 
@@ -409,7 +415,7 @@ initializeGame();
 
 // ------------------------ ANIMATIONS -----------------------------------
 
-function animateBrush(element, color, playSound = true) {
+function animateBrush(element, color, duration =1 ,playSound = true) {
   const id = getAnimationBrushId();
 
   element.style.setProperty('--clip-path', `url(#clip-indefinite-${id})`);
@@ -418,7 +424,8 @@ function animateBrush(element, color, playSound = true) {
   element.classList.add('brush-highlight');
   element.classList.add(`highlight-${color}`);
   
-  document.getElementById(`anim-${id}`).beginElement();
+  const anim = document.getElementById(`anim-${id}`);
+  anim.beginElement();
   
   if (playSound) {
     playGameSound('check');
