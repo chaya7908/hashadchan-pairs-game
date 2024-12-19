@@ -150,7 +150,7 @@ function createCard(candidate, type) {
       } else if (Array.isArray(lookingForValue)) {
         lookingForValueString = lookingForValue.map(v => {
           return TRANSLATION[`${lookingForType}_${v}`] || TRANSLATION[v] || v;
-        }).join(' \\ ');
+        }).join(' / ');
       }
       lookingForHTML += `<div class='property looking-for-${prop}'><span class='key'>${TRANSLATION[prop] || prop}:</span><span class='value'>${lookingForValueString}<span></div>`;
     }
@@ -304,7 +304,6 @@ async function highlightMatches(card1, card2) {
       const propertyElement = secondCard.querySelector(`.property-${prop}`);
 
       const isMatch = propertyMatch(secondCandidate.properties[prop], lookingForValue);
-      console.log('--------------isMatch', isMatch, prop, lookingForValue, secondCandidate.properties[prop])
 
       if (propertyElement) {
         if (isMatch) {
