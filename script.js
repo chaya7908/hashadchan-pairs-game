@@ -1,7 +1,8 @@
-const WAIT_BEFORE_START_HIGHLIGHTS = 2000;
+const WAIT_BEFORE_START_HIGHLIGHTS = 4000;
 const WAIT_BETWEEN_PROP_CHECK = 600;
-const WAIT_AFTER_HIGHLIGHTS = 4000;
-const RESET_AFTER_SUCCESS_MATCH = 5000;
+const WAIT_AFTER_WRONG_HIGHLIGHTS = 4000;
+const WAIT_AFTER_CORRECT_HIGHLIGHTS = 2000;
+const RESET_AFTER_SUCCESS_MATCH = 6000;
 const RESET_AFTER_WRONG_MATCH = 1000;
 const GAME_TIMER_MINUTES = 7;
 
@@ -25,6 +26,7 @@ let firstChoosenCard = null;
 let canClick = true;
 
 const bruchAnimationsStack = [];
+const gameSounds = [];
 
 // ------------------------- BUILD GAME BOARD -------------------------
 function initializeGame() {
@@ -211,7 +213,8 @@ function onSucessMatch(firstCard, secondCard) {
   setTimeout(() => {
     firstCard.classList.remove('flipped');
     secondCard.classList.remove('flipped');
-  }, RESET_AFTER_SUCCESS_MATCH / 4 * 3);
+    playGameSound('claps2', false);
+  }, RESET_AFTER_SUCCESS_MATCH / 4);
 
   setTimeout(() => {
     firstCard.classList.add('matched');
@@ -282,8 +285,14 @@ async function checkMatch(firstCard, secondCard) {
     await delay(WAIT_BEFORE_START_HIGHLIGHTS);
 
     const match = await highlightMatches(firstCard, secondCard);
-    await delay(WAIT_AFTER_HIGHLIGHTS);
-    (match ? onSucessMatch : onFailureMatch)(firstCard, secondCard);
+    if (match) {
+      playGameSound('claps');
+      await delay(WAIT_AFTER_CORRECT_HIGHLIGHTS);
+      onSucessMatch(firstCard, secondCard)
+    } else {
+      await delay(WAIT_AFTER_WRONG_HIGHLIGHTS);
+      onFailureMatch(firstCard, secondCard)
+    }
   }
 }
 
@@ -372,13 +381,17 @@ function resetMatchAnimation() {
 }
 
 function onCardOpened(card, cardNumber) {
+  playGameSound('flip');
   setTimeout(() => {
     const nameElement = card.querySelector('.name');
     animateBrush(nameElement, 'natural', 1, false);
   }, 500);
 }
 
-function playGameSound(type, pauseBg = false) {
+async function playGameSound(type, pauseOther = true) {
+  if (pauseOther) {
+    gameSounds.forEach(sound => sound.pause());
+  }
   // if (pauseBg) {
   //   gameBgSound.pause();
   // } else {
@@ -396,22 +409,22 @@ function playGameSound(type, pauseBg = false) {
       path = './sounds/wrong.mp3';
       break;
     case 'flip':
-      path = './sounds/tada.mp3';
+      path = './sounds/open-card.mp3';
       break;
-    case 'feedback':
+    case 'claps':
       path = './sounds/claps.mp3';
+      break;
+    case 'claps2':
+      path = './sounds/claps2.mp3';
       break;
     default:
       break;
   }
   var audio = new Audio(path);
   audio.volume = volume;
-  audio.play();
-  audio.onended = () => {
-    // console.log('gameBgSound.volume = 0.5;')
-    // gameBgSound.volume = 0.5;
-    // gameBgSound.play();
-  }
+  await audio.play();
+
+  gameSounds.push(audio);
 };
 
 initializeGame();
