@@ -157,7 +157,7 @@ function createCard(candidate, type) {
   }
 
   cardBack.innerHTML = `<div class='card-details'>
-    <div class='name' style="--anim-duration: 4s">${candidate.firstName} ${candidate.lastName}</div>
+    <div class='name' style="--anim-duration: 4s">${candidate.name}</div>
     <div class='properties'>${propertiesHTML}</div>
     <div class='looking-for'>${lookingForHTML}</div>
   </div>`;
