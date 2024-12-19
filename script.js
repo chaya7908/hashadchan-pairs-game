@@ -198,7 +198,6 @@ function onSucessMatch(firstCard, secondCard) {
   successMatchAnimation();
 
   setTimeout(() => {
-
     firstCard.classList.remove('flipped');
     secondCard.classList.remove('flipped');
   }, RESET_AFTER_SUCCESS_MATCH / 4 * 3);
@@ -223,6 +222,7 @@ function onFailureMatch(firstCard, secondCard) {
 
     stopBlink([firstCard, secondCard])
     resetMatchState(firstCard, secondCard);
+    resetHighlights();
   }, RESET_AFTER_WRONG_MATCH);
 }
 
@@ -264,9 +264,9 @@ async function checkMatch(firstCard, secondCard) {
   if (firstCandidate && secondCandidate) {
     setTimeout(async () => {
       const match = await highlightMatches(firstCard, secondCard);
-      setTimeout(() =>
-        (match ? onSucessMatch : onFailureMatch)(firstCard, secondCard)
-        , 1000);
+      setTimeout(() => {
+        (match ? onSucessMatch : onFailureMatch)(firstCard, secondCard);
+      }, 1000);
     }, WAIT_BEFORE_CHECK_MATCH_INDICATION);
   }
 }
@@ -321,6 +321,13 @@ async function highlightMatches(card1, card2) {
   return match1 && match2;
 }
 
+function resetHighlights() {
+  document.querySelectorAll('.property').forEach(element => {
+    element.classList.remove('zoom-once');
+    element.classList.remove('highlight-match');
+    element.classList.remove('highlight-no-match');
+  });
+}
 
 // ------------------------ ACTIONS -----------------------------------
 function blink(elements, color) {
