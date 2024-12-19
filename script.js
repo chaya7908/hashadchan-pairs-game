@@ -289,7 +289,6 @@ async function checkMatch(firstCard, secondCard) {
 
 async function highlightMatches(card1, card2) {
   const [maleCard, femaleCard] = card1.dataset.type === 'MALE' ? [card1, card2] : [card2, card1];
-  let counter = 1;
 
   async function highlight(firstCard, secondCard) {
     const firstCandidate = firstCard.dataset.type === 'MALE' ? maleCandidates[firstCard.dataset.id - 1] : femaleCandidates[firstCard.dataset.id - 1];
@@ -301,6 +300,7 @@ async function highlightMatches(card1, card2) {
       const propertyElement = secondCard.querySelector(`.property-${prop}`);
 
       const isMatch = propertyMatch(secondCandidate.properties[prop], lookingForValue);
+      console.log('--------------isMatch', isMatch, prop, lookingForValue, secondCandidate.properties[prop])
 
       if (propertyElement) {
         if (isMatch) {
@@ -332,6 +332,9 @@ function resetHighlights() {
   document.querySelectorAll('.property').forEach(element => {
     element.classList.remove('zoom-once');
     element.classList.remove('brush-highlight');
+    element.classList.remove('highlight-red');
+    element.classList.remove('highlight-yellow');
+    element.classList.remove('highlight-natural');
   });
 }
 
@@ -474,7 +477,6 @@ function genereateBrushAnimation() {
 }
 
 function getAnimationBrushId() {
-  console.log(bruchAnimationsStack)
   const id = bruchAnimationsStack.pop();
   genereateBrushAnimation();
   return id;
