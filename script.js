@@ -278,21 +278,16 @@ function propertyMatch(prop, lookingFor) {
 }
 
 async function checkMatch(firstCard, secondCard) {
-  const firstCandidate = firstCard.dataset.type === 'MALE' ? maleCandidates[firstCard.dataset.id - 1] : femaleCandidates[firstCard.dataset.id - 1];
-  const secondCandidate = secondCard.dataset.type === 'FEMALE' ? femaleCandidates[secondCard.dataset.id - 1] : maleCandidates[secondCard.dataset.id - 1];
+  await delay(WAIT_BEFORE_START_HIGHLIGHTS);
 
-  if (firstCandidate && secondCandidate) {
-    await delay(WAIT_BEFORE_START_HIGHLIGHTS);
-
-    const match = await highlightMatches(firstCard, secondCard);
-    if (match) {
-      playGameSound('claps');
-      await delay(WAIT_AFTER_CORRECT_HIGHLIGHTS);
-      onSucessMatch(firstCard, secondCard)
-    } else {
-      await delay(WAIT_AFTER_WRONG_HIGHLIGHTS);
-      onFailureMatch(firstCard, secondCard)
-    }
+  const match = await highlightMatches(firstCard, secondCard);
+  if (match) {
+    playGameSound('claps');
+    await delay(WAIT_AFTER_CORRECT_HIGHLIGHTS);
+    onSucessMatch(firstCard, secondCard)
+  } else {
+    await delay(WAIT_AFTER_WRONG_HIGHLIGHTS);
+    onFailureMatch(firstCard, secondCard)
   }
 }
 
@@ -300,9 +295,9 @@ async function highlightMatches(card1, card2) {
   const [maleCard, femaleCard] = card1.dataset.type === 'MALE' ? [card1, card2] : [card2, card1];
 
   async function highlight(firstCard, secondCard) {
-    const firstCandidate = firstCard.dataset.type === 'MALE' ? maleCandidates[firstCard.dataset.id - 1] : femaleCandidates[firstCard.dataset.id - 1];
-    const secondCandidate = secondCard.dataset.type === 'FEMALE' ? femaleCandidates[secondCard.dataset.id - 1] : maleCandidates[secondCard.dataset.id - 1];
-
+    const firstCandidate = getCandidateById(firstCard.dataset.type, firstCard.dataset.id);
+    const secondCandidate = getCandidateById(secondCard.dataset.type, secondCard.dataset.id);
+  
     for (const prop of SUPPORTED_PROPS) {
       const lookingForValue = firstCandidate.lookingFor[prop];
       const lookingForElement = firstCard.querySelector(`.looking-for-${prop}`);
@@ -347,6 +342,14 @@ function resetHighlights() {
   });
 }
 
+function getCandidateById(type, id) {
+  if (type === 'MALE') {
+    return maleCandidates.find(c => c.id == id);
+  } else {
+    return femaleCandidates.find(c => c.id == id);
+  }
+}
+
 // ------------------------ ACTIONS -----------------------------------
 function blink(elements, color) {
   // Get the value of the CSS variable
@@ -380,7 +383,7 @@ function resetMatchAnimation() {
   document.getElementById('match-animation').classList.remove('rotate-zoom')
 }
 
-function onCardOpened(card, cardNumber) {
+function onCardOpened(card) {
   playGameSound('flip');
   setTimeout(() => {
     const nameElement = card.querySelector('.name');
@@ -471,7 +474,6 @@ function delay(ms) {
 function generateRandomId() {
   return 'id-' + Math.random().toString(36).substring(2, 15);
 }
-
 
 function genereateBrushAnimations() {
   for (let i = 0; i < 10; i++) {
