@@ -315,7 +315,9 @@ async function highlightMatches(card1, card2) {
         } else {
           animateBrush(lookingForElement, 'red');
           await delay(500);
-          animateBrush(propertyElement, 'red');
+          animateBrush(propertyElement, 'red', 1, false);
+          await delay(500);
+          playGameSound('wrong-check');
           await delay(WAIT_BETWEEN_PROP_CHECK);
         }
       }
@@ -410,6 +412,9 @@ async function playGameSound(type, pauseOther = true) {
       break;
     case 'wrong':
       path = './sounds/wrong1.mp3';
+      break;
+    case 'wrong-check':
+      path = './sounds/wrong-check.mp3';
       break;
     case 'flip':
       path = './sounds/open-card.mp3';
