@@ -229,7 +229,7 @@ function onSucessMatch(firstCard, secondCard) {
 function onFailureMatch(firstCard, secondCard) {
   blink([firstCard, secondCard], 'red');
   wrongMatchAnimation();
-
+  playGameSound('wrong', false);
   setTimeout(() => {
     firstCard.classList.remove('flipped');
     secondCard.classList.remove('flipped');
@@ -409,7 +409,7 @@ async function playGameSound(type, pauseOther = true) {
       path = './sounds/check2.mp3';
       break;
     case 'wrong':
-      path = './sounds/wrong.mp3';
+      path = './sounds/wrong1.mp3';
       break;
     case 'flip':
       path = './sounds/open-card.mp3';
