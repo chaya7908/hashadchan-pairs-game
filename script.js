@@ -4,7 +4,12 @@ const WAIT_AFTER_WRONG_HIGHLIGHTS = 2000;
 const WAIT_AFTER_CORRECT_HIGHLIGHTS = 2000;
 const RESET_AFTER_SUCCESS_MATCH = 6000;
 const RESET_AFTER_WRONG_MATCH = 1000;
-const GAME_TIMER_MINUTES = 7;
+const GAME_TIMER_MINUTES = 5;
+
+let isGameOver = false;
+const gameBgSound = new Audio('./sounds/game-bg.mp3');
+gameBgSound.loop = true;
+
 
 // ------------------------- COLORS -----------------------------------
 const originalColors = [
@@ -38,6 +43,9 @@ function initializeGame() {
 
   initTimer();
   genereateBrushAnimations();
+  setTimeout(() => {
+    gameBgSound.play();
+  });
 }
 
 function initTimer() {
@@ -213,6 +221,7 @@ function onSucessMatch(firstCard, secondCard) {
   setTimeout(() => {
     firstCard.classList.remove('flipped');
     secondCard.classList.remove('flipped');
+    lowerBgVolume(0.1);
     playGameSound('claps2', false);
   }, RESET_AFTER_SUCCESS_MATCH / 4);
 
@@ -223,6 +232,7 @@ function onSucessMatch(firstCard, secondCard) {
     stopBlink([firstCard, secondCard])
     bgColorForMatch([firstCard, secondCard])
     resetMatchState(firstCard, secondCard);
+    resetBgVolume();
   }, RESET_AFTER_SUCCESS_MATCH);
 }
 
@@ -237,6 +247,7 @@ function onFailureMatch(firstCard, secondCard) {
     stopBlink([firstCard, secondCard])
     resetMatchState(firstCard, secondCard);
     resetHighlights();
+    resetBgVolume();
   }, RESET_AFTER_WRONG_MATCH);
 }
 
@@ -254,12 +265,17 @@ function resetMatchState(firstCard, secondCard) {
 }
 
 async function gameOver() {
+  isGameOver = true;
   const gameBoard = document.querySelector('.game-over-container');
   gameBoard.style.display = 'block';
   const text = document.querySelector('.text-2');
+  playGameSound('game-over');
+
   await delay(500);
   animateBrush(text, 'red', 3, false);
   setInterval(() => {
+    playGameSound('game-over');
+    lowerBgVolume(0.5);
     animateBrush(text, 'red', 3, false);
   }, 4000);
 }
@@ -278,9 +294,14 @@ function propertyMatch(prop, lookingFor) {
 }
 
 async function checkMatch(firstCard, secondCard) {
+  if (isGameOver) return;
+
+  lowerBgVolume();
   await delay(WAIT_BEFORE_START_HIGHLIGHTS);
 
   const match = await highlightMatches(firstCard, secondCard);
+  if (isGameOver) return;
+
   if (match) {
     playGameSound('claps');
     await delay(WAIT_AFTER_CORRECT_HIGHLIGHTS);
@@ -299,6 +320,8 @@ async function highlightMatches(card1, card2) {
     const secondCandidate = getCandidateById(secondCard.dataset.type, secondCard.dataset.id);
   
     for (const prop of SUPPORTED_PROPS) {
+      if (isGameOver) return;
+
       const lookingForValue = firstCandidate.lookingFor[prop];
       const lookingForElement = firstCard.querySelector(`.looking-for-${prop}`);
       const propertyElement = secondCard.querySelector(`.property-${prop}`);
@@ -396,45 +419,56 @@ async function playGameSound(type, pauseOther = true) {
   if (pauseOther) {
     gameSounds.forEach(sound => sound.pause());
   }
-  // if (pauseBg) {
-  //   gameBgSound.pause();
-  // } else {
-  //   gameBgSound.volume = 0.1;
-  // }
-
+    
   let path = '';
-  let volume = 1;
+  let volume = 0.3;
   switch (type) {
     case 'check':
-      volume = 0.7;
       path = './sounds/check2.mp3';
       break;
     case 'wrong':
+      volume = 0.1;
       path = './sounds/wrong1.mp3';
       break;
     case 'wrong-check':
       path = './sounds/wrong-check.mp3';
       break;
     case 'flip':
+      volume = 0.2;
       path = './sounds/open-card.mp3';
       break;
     case 'claps':
       path = './sounds/claps.mp3';
       break;
     case 'claps2':
+      volume = 0.3;
       path = './sounds/claps2.mp3';
+      break;
+    case 'game-over':
+      path = './sounds/game-over.mp3';
       break;
     default:
       break;
   }
+
   var audio = new Audio(path);
   audio.volume = volume;
-  await audio.play();
 
+  audio.play();
   gameSounds.push(audio);
 };
 
-initializeGame();
+function lowerBgVolume(volume = 0.3) {
+  gameBgSound.volume = volume;
+}
+
+function resetBgVolume() {
+  gameBgSound.volume = 1;
+}
+
+document.addEventListener('mousedown', () => {
+  initializeGame();
+}, { once: true });
 
 // ------------------------ ANIMATIONS -----------------------------------
 
