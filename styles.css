@@ -164,17 +164,18 @@ body {
   width: 100%;
   height: 100%;
   gap: 50px;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   position: relative;
 }
 
 .section {
-  flex: 1 1 0;
+  flex: 0 1 auto;
+  min-width: 525px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(4, auto);
 
-  grid-template-columns: repeat(5, minmax(100px, 150px));
+  grid-template-columns: repeat(5, minmax(50px, 150px));
   grid-template-rows: repeat(4, minmax(120px, 1fr));
 
   gap: 10px;
@@ -196,13 +197,27 @@ body {
   width: 100%;
 }
 
+@media (max-width: 1120px) {
+  .board-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  #match-animation {
+    margin: -100px auto;
+  }
+}
+
 @media (max-width: 1300px) {
   .section {
-    flex: 1 0 100%;
+    /* flex: 1 0 100%; */
   }
 
   #match-animation {
-    margin: -100px auto;
+    /* margin: -100px auto; */
+  }
+
+  .card-back .card-details {
+    gap: 20px;
   }
 }
 
