@@ -11,8 +11,7 @@
 
 <body>
   <div class="header">
-    <div class="logo-container"
-      onclick="goToSite()">
+    <div class="logo-container" onclick="goToSite()">
       <div class="logo">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="171.888"
           height="53.407" viewBox="0 0 171.888 53.407" class="">
@@ -127,12 +126,13 @@
     <!-- START -->
     <div class="start-game-container">
       <div class="text-1">
-        <p class="text-to-highlight">כבר מעל <span class="yellow">60</span> זוגות התארסו דרך <span class="yellow">השדכן</span> - מיזם השידוכים של הציבור החרדי!</p>
+        <p class="text-to-highlight">כבר מעל <span class="yellow">60</span> זוגות התארסו דרך <span
+            class="yellow">השדכן</span> - מיזם השידוכים של הציבור החרדי!</p>
         <p class="text-to-highlight">יותר מ <span class="yellow">500</span> שדכנים נרשמו למיזם!</p>
         <p class="text-to-highlight">בואו <span class="yellow">לבחון</span> את עצמכם-</p>
         <p class="text-to-highlight">האם גם אתם יכולים להיות <span class="yellow">שדכנים</span>?</p>
         <p class="text-to-highlight">נסו <span class="yellow">להתאים</span> זוגות על פי הדרישות של כל אחד</p>
-        <p class="text-to-highlight yellow">בהצלחה!</p>  
+        <p class="text-to-highlight yellow">בהצלחה!</p>
       </div>
       <div class="text-2">
       </div>
@@ -161,13 +161,24 @@
         <h1 class="text-1">לא קל להיות שדכן...</h1>
         <div class="buttons">
           <button id="play-again" onClick="window.location.reload()">רוצה לנסות שוב</button>
-          <button id="go-to-site"
-            onClick="goToSite()">רוצה לחפש
+          <button id="go-to-site" onClick="goToSite()">רוצה לחפש
             ב'שדכן'</button>
         </div>
       </div>
     </div>
+
+    <div id="gift-modal-overlay">
+      <div id="gift-modal-content">
+        <button id="gift-close-modal">X</button>
+        <div>
+          <h1>מזל טוב!</h1>
+          <h2 class="text-to-highlight">אתה שדכן מומחה</h2>
+          <p>קבלת קופון מתנה <code>משחקנוכה</code></p>
+        </div>
+      </div>
+    </div>
   </div>
+
   <div class="footer">
     <div class="created-by">
       <span>✨</span>

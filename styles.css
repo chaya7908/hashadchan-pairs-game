@@ -21,6 +21,7 @@ html {
 .hidden {
   display: none !important;
 }
+
 .transparent {
   opacity: 0 !important;
   transition: all 2s ease;
@@ -28,7 +29,6 @@ html {
 
 .text-to-highlight {
   position: relative;
-  padding: 5px 200px;
 }
 
 /* ================ page layout ================ */
@@ -116,7 +116,8 @@ body {
   background-color: var(--color-blue);
 }
 
-.start-game-container .text-1, .start-game-container .text-2 {
+.start-game-container .text-1,
+.start-game-container .text-2 {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -146,6 +147,7 @@ body {
   font-weight: bold;
   padding-left: 150px;
 }
+
 .start-game-container .text-1 p:last-child {
   font-size: 2rem;
   margin-top: 10px;
@@ -356,7 +358,7 @@ body {
   transform: translate(-50%, -50%);
   z-index: 10;
   background-color: var(--color-light-purple);
-  box-shadow: 0 8px 16px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 20px 20px rgb(0 0 0 / 43%);
 }
 
 .placeholder {
@@ -477,6 +479,73 @@ body {
   padding: 5px 200px;
 }
 
+/* =============== gift ======================= */
+#gift-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#gift-modal-content {
+  background-color: var(--color-gray);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+}
+
+#gift-modal-content h1 {
+  margin-bottom: 5px;
+}
+
+#gift-modal-content h2 {
+  margin-top: 5px;
+  padding: 5px 100px;
+}
+
+#gift-modal-content p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+#gift-modal-content code {
+  padding: 5px;
+  border-radius: 1px;
+  background-color: var(--color-light-purple);
+}
+#gift-close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+#gift-modal-overlay.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+
 /* ================ animations ================ */
 .rotate {
   transform-origin: center;
@@ -553,6 +622,7 @@ body {
     transform: scale(1);
   }
 }
+
 @keyframes zoom-out {
   0% {
     transform: scale(1);

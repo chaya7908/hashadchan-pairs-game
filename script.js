@@ -10,6 +10,7 @@ let isGameOver = false;
 const gameBgSound = new Audio('./sounds/game-bg.mp3');
 gameBgSound.loop = true;
 
+let wins = 0;
 
 // ------------------------- COLORS -----------------------------------
 const originalColors = [
@@ -35,8 +36,6 @@ const gameSounds = [];
 
 // ------------------------- BUILD GAME BOARD -------------------------
 async function initStartContainer() {
-  const text1 = document.querySelector('.start-game-container .text-1');
-  const text2 = document.querySelector('.start-game-container .text-2');
   const text1Elements = document.querySelectorAll('.start-game-container .text-1 p');
   const text2Elements = document.querySelectorAll('.start-game-container .text-2 p');
   [...text1Elements, ...text2Elements].forEach(p => p.classList.add('transparent'));
@@ -44,16 +43,16 @@ async function initStartContainer() {
   for (p of text1Elements) {
     p.classList.remove('transparent');
     animateBrush({ element: p, color: 'purple', duration: 2, playSound: false, zoomTimeout: 1000 });
-    await delay(1500);
+    await delay(1000);
     p.classList.add('active');
   }
 
-  await delay(1500);
+  await delay(1000);
 
   for (p of text2Elements) {
     p.classList.remove('transparent');
     animateBrush({ element: p, color: 'natural', duration: 2, playSound: false, zoomTimeout: 1000 });
-    await delay(1500);
+    await delay(1000);
     p.classList.add('active');
   }
 
@@ -266,6 +265,7 @@ function onSucessMatch(firstCard, secondCard) {
     bgColorForMatch([firstCard, secondCard])
     resetMatchState(firstCard, secondCard);
     resetBgVolume();
+    checkGift();
   }, RESET_AFTER_SUCCESS_MATCH);
 }
 
@@ -336,6 +336,7 @@ async function checkMatch(firstCard, secondCard) {
   if (isGameOver) return;
 
   if (match) {
+    wins ++;
     playGameSound('claps');
     await delay(WAIT_AFTER_CORRECT_HIGHLIGHTS);
     onSucessMatch(firstCard, secondCard)
@@ -405,6 +406,22 @@ function getCandidateById(type, id) {
   } else {
     return femaleCandidates.find(c => c.id == id);
   }
+}
+
+function checkGift() {
+  if (wins !== 3)  return;
+  
+  const modalOverlay = document.getElementById('gift-modal-overlay');
+  const closeModal = document.getElementById('gift-close-modal');
+  modalOverlay.classList.add('active');
+  closeModal.addEventListener('click', () =>{
+    modalOverlay.classList.remove('active');
+  });
+
+  modalOverlay.querySelectorAll('.text-to-highlight').forEach(e => {
+    animateBrush({ element: e, color: 'yellow', duration: 1, playSound: false });
+  });
+  playGameSound('win');
 }
 
 // ------------------------ ACTIONS -----------------------------------
@@ -479,6 +496,9 @@ async function playGameSound(type, pauseOther = true) {
       break;
     case 'game-over':
       path = './sounds/game-over.mp3';
+      break;
+    case 'win':
+      path = './sounds/win.mp3';
       break;
     default:
       break;
