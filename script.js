@@ -34,7 +34,41 @@ const bruchAnimationsStack = [];
 const gameSounds = [];
 
 // ------------------------- BUILD GAME BOARD -------------------------
+async function initStartContainer() {
+  const text1 = document.querySelector('.start-game-container .text-1');
+  const text2 = document.querySelector('.start-game-container .text-2');
+  const text1Elements = document.querySelectorAll('.start-game-container .text-1 p');
+  const text2Elements = document.querySelectorAll('.start-game-container .text-2 p');
+  [...text1Elements, ...text2Elements].forEach(p => p.classList.add('transparent'));
+  
+  for (p of text1Elements) {
+    p.classList.remove('transparent');
+    animateBrush({ element: p, color: 'purple', duration: 2, playSound: false, zoomTimeout: 1000 });
+    await delay(1500);
+    p.classList.add('active');
+  }
+
+  await delay(1500);
+
+  for (p of text2Elements) {
+    p.classList.remove('transparent');
+    animateBrush({ element: p, color: 'natural', duration: 2, playSound: false, zoomTimeout: 1000 });
+    await delay(1500);
+    p.classList.add('active');
+  }
+
+  await delay(1000);
+  const button = document.querySelector('.start-game-container button');
+  button.classList.remove('transparent');
+}
+
 function initializeGame() {
+  const start = document.querySelector('.start-game-container');
+  start.classList.add('hidden');
+
+  const game = document.querySelector('.board-container');
+  game.classList.remove('hidden');
+
   const maleSection = document.querySelector('.section.male');
   const femaleSection = document.querySelector('.section.female');
 
@@ -42,7 +76,6 @@ function initializeGame() {
   shuffleArray(femaleCandidates).forEach(female => femaleSection.appendChild(createCard(female, 'FEMALE')));
 
   initTimer();
-  genereateBrushAnimations();
   setTimeout(() => {
     gameBgSound.play();
   });
@@ -202,7 +235,7 @@ function onCardClicked(card) {
   card.classList.toggle('active');
   card.classList.toggle('flipped');
 
-  
+
   // handle click event
   if (firstChoosenCard) {
     canClick = false;
@@ -272,11 +305,11 @@ async function gameOver() {
   playGameSound('game-over');
 
   await delay(500);
-  animateBrush(text, 'red', 3, false);
+  animateBrush({ element: text, color: 'red', duration: 3, playSound: false });
   setInterval(() => {
     playGameSound('game-over');
     lowerBgVolume(0.5);
-    animateBrush(text, 'red', 3, false);
+    animateBrush({ element: text, color: 'red', duration: 3, playSound: false });
   }, 4000);
 }
 
@@ -318,7 +351,7 @@ async function highlightMatches(card1, card2) {
   async function highlight(firstCard, secondCard) {
     const firstCandidate = getCandidateById(firstCard.dataset.type, firstCard.dataset.id);
     const secondCandidate = getCandidateById(secondCard.dataset.type, secondCard.dataset.id);
-  
+
     for (const prop of SUPPORTED_PROPS) {
       if (isGameOver) return;
 
@@ -330,14 +363,14 @@ async function highlightMatches(card1, card2) {
 
       if (propertyElement) {
         if (isMatch) {
-          animateBrush(lookingForElement, 'yellow');
+          animateBrush({ element: lookingForElement, color: 'yellow' });
           await delay(500);
-          animateBrush(propertyElement, 'yellow');
+          animateBrush({ element: propertyElement, color: 'yellow' });
           await delay(WAIT_BETWEEN_PROP_CHECK);
         } else {
-          animateBrush(lookingForElement, 'red');
+          animateBrush({ element: lookingForElement, color: 'red' });
           await delay(500);
-          animateBrush(propertyElement, 'red', 1, false);
+          animateBrush({ element: propertyElement, color: 'red', playSound: false });
           await delay(500);
           playGameSound('wrong-check');
           await delay(WAIT_BETWEEN_PROP_CHECK);
@@ -346,7 +379,7 @@ async function highlightMatches(card1, card2) {
 
       if (!isMatch) return false;
     }
-    
+
     return true;
   }
 
@@ -411,7 +444,7 @@ function onCardOpened(card) {
   playGameSound('flip');
   setTimeout(() => {
     const nameElement = card.querySelector('.name');
-    animateBrush(nameElement, 'natural', 1, false);
+    animateBrush({ element: nameElement, color: 'natural', playSound: false });
   }, 500);
 }
 
@@ -419,7 +452,7 @@ async function playGameSound(type, pauseOther = true) {
   if (pauseOther) {
     gameSounds.forEach(sound => sound.pause());
   }
-    
+
   let path = '';
   let volume = 0.3;
   switch (type) {
@@ -466,24 +499,25 @@ function resetBgVolume() {
   gameBgSound.volume = 1;
 }
 
-document.addEventListener('mousedown', () => {
-  initializeGame();
-}, { once: true });
-
 // ------------------------ ANIMATIONS -----------------------------------
 
-function animateBrush(element, color, duration =1 ,playSound = true) {
+function animateBrush({ element, color, duration = 1, playSound = true, zoomTimeout = 0 }) {
   const id = getAnimationBrushId();
 
   element.style.setProperty('--clip-path', `url(#clip-indefinite-${id})`);
-  
-  element.classList.add('zoom-once');
+
+  setTimeout(() => {
+    element.classList.add('zoom-once');
+  }, zoomTimeout);
   element.classList.add('brush-highlight');
   element.classList.add(`highlight-${color}`);
-  
+
   const anim = document.getElementById(`anim-${id}`);
+  if (duration) {
+    anim.setAttribute('dur', `${duration}s`);
+  }
   anim.beginElement();
-  
+
   if (playSound) {
     playGameSound('check');
   }
@@ -534,3 +568,6 @@ function getAnimationBrushId() {
   genereateBrushAnimation();
   return id;
 }
+
+genereateBrushAnimations();
+initStartContainer();

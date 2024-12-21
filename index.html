@@ -124,22 +124,46 @@
     </div>
   </div>
   <div class="container">
-    <div class="section male">
-      <!-- Boys' cards will be appended here -->
+    <!-- START -->
+    <div class="start-game-container">
+      <div class="text-1">
+        <p class="text-to-highlight">כבר מעל <span class="yellow">60</span> זוגות התארסו דרך <span class="yellow">השדכן</span> - מיזם השידוכים של הציבור החרדי!</p>
+        <p class="text-to-highlight">יותר מ <span class="yellow">500</span> שדכנים נרשמו למיזם!</p>
+        <p class="text-to-highlight">בואו <span class="yellow">לבחון</span> את עצמכם-</p>
+        <p class="text-to-highlight">האם גם אתם יכולים להיות <span class="yellow">שדכנים</span>?</p>
+        <p class="text-to-highlight">נסו <span class="yellow">להתאים</span> זוגות על פי הדרישות של כל אחד</p>
+        <p class="text-to-highlight yellow">בהצלחה!</p>  
+      </div>
+      <div class="text-2">
+      </div>
+      <div class="text-2">
+        <p class="text-to-highlight">הצלחתם להתאים 3 זוגות? <span class="yellow">יש הפתעה :)</span></p>
+      </div>
+      <button class="zoom transparent" id="start" onclick="initializeGame()">אני רוצה להתחיל</button>
     </div>
-    <div id="match-animation" class="zoom">
-      <img class="swing" src="https://hashadchan.co.il/arrowAnimation.gif" />
+    <!-- GAME -->
+    <div class="board-container hidden">
+      <div class="section male">
+        <!-- Boys' cards will be appended here -->
+      </div>
+      <div id="match-animation" class="zoom">
+        <img class="swing" src="https://hashadchan.co.il/arrowAnimation.gif" />
+      </div>
+      <div class="section female">
+        <!-- Girls' cards will be appended here -->
+      </div>
     </div>
-    <div class="section female">
-      <!-- Girls' cards will be appended here -->
-    </div>
+
+    <!-- GAME OVER -->
     <div class="game-over-container">
       <div class="game-over">
         <h1 class="text-2">הזמן שלך נגמר :(</h1>
         <h1 class="text-1">לא קל להיות שדכן...</h1>
         <div class="buttons">
           <button id="play-again" onClick="window.location.reload()">רוצה לנסות שוב</button>
-          <button id="go-to-site" onClick="window.location = 'https://hashadchan.co.il/?utm_source=memory_game&utm_medium=site'">רוצה לחפש ב'שדכן'</button>
+          <button id="go-to-site"
+            onClick="window.location = 'https://hashadchan.co.il/?utm_source=memory_game&utm_medium=site'">רוצה לחפש
+            ב'שדכן'</button>
         </div>
       </div>
     </div>
