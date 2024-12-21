@@ -569,5 +569,9 @@ function getAnimationBrushId() {
   return id;
 }
 
+function goToSite() {
+  window.open('https://hashadchan.co.il/?utm_source=memory_game&utm_medium=site', '_blank');
+}
+
 genereateBrushAnimations();
 initStartContainer();
