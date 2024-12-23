@@ -545,7 +545,7 @@ function animateBrush({ element, color, duration = 1, playSound = true, zoomTime
 
 // ------------------------ UTILS -----------------------------------
 function shuffleArray(array) {
-  if (getQueryParams().has('DEV')) return array;
+  if (isDev()) return array;
 
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -554,9 +554,8 @@ function shuffleArray(array) {
   return array;
 }
 
-function getQueryParams() {
-  const params = new URLSearchParams(window.location.search);
-  return params;
+function isDev() {
+  return localStorage.getItem('hashadchan-pairs-game-dev') === 'true' ;
 }
 
 function delay(ms) {
