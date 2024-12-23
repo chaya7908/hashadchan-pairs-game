@@ -144,7 +144,7 @@ const maleCandidates = [
     properties: {openMinded: 'CONSERVATIVE', sector: 'YEMEN', age: 48},
     lookingFor: {
       openMinded: ['CONSERVATIVE', 'CONSERVATIVE_AND_OPEN_MIND'],
-      sector: ['SFARADI', 'YEMEN'],
+      sector: ['SFARADI', 'YEMEN', 'LITHUANIAN'],
       age: {min: 41, max: 50},
     },
   },
@@ -232,7 +232,7 @@ const maleCandidates = [
     properties: {openMinded: 'CONSERVATIVE_AND_OPEN_MIND', sector: 'SFARADI', age: 25},
     lookingFor: {
       openMinded: ['CONSERVATIVE_AND_OPEN_MIND', 'OPEN'],
-      sector: ['SFARADI'],
+      sector: ['SFARADI', 'HALF_HALF'],
       age: {min: 20, max: 24},
     },
   },
