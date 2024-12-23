@@ -18,6 +18,19 @@ html {
   background-color: var(--color-gray);
 }
 
+.hidden {
+  display: none !important;
+}
+
+.transparent {
+  opacity: 0 !important;
+  transition: all 2s ease;
+}
+
+.text-to-highlight {
+  position: relative;
+}
+
 /* ================ page layout ================ */
 body {
   display: flex;
@@ -33,6 +46,7 @@ body {
   flex-direction: row;
   position: relative;
   padding: 5px 25px;
+  border-bottom: 1px solid var(--color-gray);
 }
 
 .header .logo-container {
@@ -45,28 +59,123 @@ body {
 .logo-container .logo:nth-child(1) {
   animation: logoAnimation1 var(--logo-animation-duration) infinite;
 }
+
 .logo-container .logo:nth-child(2) {
   margin-left: auto;
   position: absolute;
   animation: logoAnimation2 var(--logo-animation-duration) infinite;
 }
 
+.footer {
+  background-color: var(--color-blue);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 20px;
+  flex-direction: row;
+  position: relative;
+  padding: 5px 25px;
+  border-top: 1px solid var(--color-gray);
+}
+
+.footer .created-by {
+  display: flex;
+  direction: ltr;
+  color: var(--color-yellow);
+  gap: 5px;
+  font-size: 12px;
+}
+
+.footer .created-by a {
+  color: var(--color-yellow);
+  opacity: 0.8;
+}
+
 .container {
   display: flex;
   width: 100%;
   height: 100%;
+  position: relative;
+}
+
+.start-game-container {
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: scroll;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  position: absolute;
+  z-index: 100;
+  color: var(--color-blue);
+  background-color: var(--color-blue);
+}
+
+.start-game-container .text-1,
+.start-game-container .text-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.start-game-container .active .yellow,
+.start-game-container .active.yellow {
+  transition: all 2s ease;
+  color: var(--color-yellow);
+  text-shadow: 0px 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+.start-game-container p {
+  margin-top: 0;
+  font-size: 24px;
+  padding: 15px 100px;
+  margin-bottom: 0;
+  margin-top: -15px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.start-game-container .text-1 p:nth-child(1) {
+  font-size: 30px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  padding-left: 150px;
+}
+
+.start-game-container .text-1 p:last-child {
+  font-size: 2rem;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.start-game-container button {
+  margin-top: 50px;
+}
+
+/* board */
+.board-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
   gap: 50px;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   position: relative;
 }
 
 .section {
-  flex: 1 1 0;
+  flex: 0 1 auto;
+  min-width: 525px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(4, auto);
 
-  grid-template-columns: repeat(5, minmax(100px, 150px));
+  grid-template-columns: repeat(5, minmax(50px, 150px));
   grid-template-rows: repeat(4, minmax(120px, 1fr));
 
   gap: 10px;
@@ -88,13 +197,27 @@ body {
   width: 100%;
 }
 
+@media (max-width: 1120px) {
+  .board-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  #match-animation {
+    margin: -100px auto;
+  }
+}
+
 @media (max-width: 1300px) {
   .section {
-    flex: 1 0 100%;
+    /* flex: 1 0 100%; */
   }
 
   #match-animation {
-    margin: -100px auto;
+    /* margin: -100px auto; */
+  }
+
+  .card-back .card-details {
+    gap: 20px;
   }
 }
 
@@ -175,8 +298,18 @@ body {
   display: flex;
   gap: 40px;
   flex-direction: column;
+  align-items: flex-start;
 }
-.card-details .properties, .card-back .looking-for {
+
+.card-details .name {
+  font-size: 32px;
+  text-align: right;
+  position: relative;
+  padding: 3px 15px;
+}
+
+.card-details .properties,
+.card-back .looking-for {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -190,8 +323,7 @@ body {
   margin-right: -10px;
 }
 
-.highlight-match::before,
-.highlight-no-match:before {
+.brush-highlight::before {
   content: '';
   position: absolute;
   height: 100%;
@@ -202,11 +334,20 @@ body {
   clip-path: var(--clip-path);
 }
 
-.highlight-match::before {
+.highlight-yellow::before {
   background: var(--color-yellow);
 }
-.highlight-no-match::before {
+
+.highlight-red::before {
   background: var(--color-red);
+}
+
+.highlight-purple::before {
+  background: var(--color-light-purple);
+}
+
+.highlight-natural::before {
+  background: var(--color-gray);
 }
 
 .card-back .title {
@@ -232,7 +373,7 @@ body {
   transform: translate(-50%, -50%);
   z-index: 10;
   background-color: var(--color-light-purple);
-  box-shadow: 0 8px 16px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 20px 20px rgb(0 0 0 / 43%);
 }
 
 .placeholder {
@@ -293,32 +434,47 @@ body {
   justify-content: center;
   align-items: center;
   height: 80%;
-  /* background-color: var(--color-gray); */
   padding: 50px 80px;
   border-radius: 20px;
   margin: auto;
   color: white;
 }
 
-#play-again {
-  background-color: var(--color-yellow);
-  color: var(--color-blue);
+.game-over-container .buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.game-over-container button,
+.start-game-container button {
   border: none;
   padding: 10px 60px;
   cursor: pointer;
   border-radius: 10px;
   font-size: 18px;
   font-size: 2rem;
-  animation: zoomInOut 4s ease-in-out infinite 2s;
 }
 
-#play-again:hover {
-  background-color: transparent;
+.game-over-container button:hover,
+.start-game-container button:hover {
+  transform: scale(1.04);
+  opacity: 0.8;
+}
+
+#play-again,
+#start {
   color: var(--color-yellow);
   border: 1px solid var(--color-yellow);
+  background-color: transparent;
 }
 
-.game-over h1:nth-child(1) {
+#go-to-site {
+  background-color: transparent;
+  background-color: var(--color-yellow);
+  color: var(--color-blue);
+}
+
+.game-over .text-1 {
   color: #fff;
   background: linear-gradient(90deg, var(--color-yellow), var(--color-light-purple), var(--color-red));
   background-size: 200% auto;
@@ -327,14 +483,83 @@ body {
   animation: zoomInOut 4s ease-in-out infinite, shimmer 1s linear infinite;
   text-align: center;
   font-size: 5rem;
-  margin-bottom: 0;
-}
-.game-over h1:nth-child(2) {
+  margin-top: 0;
   margin-bottom: auto;
-  font-size: 3rem;
-  color: var(--color-red);
-  animation: blink 0.5s infinite;
 }
+
+.game-over .text-2 {
+  font-size: 3rem;
+  color: var(--color-gray);
+  position: relative;
+  padding: 5px 200px;
+}
+
+/* =============== gift ======================= */
+#gift-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#gift-modal-content {
+  background-color: var(--color-gray);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+}
+
+#gift-modal-content h1 {
+  margin-bottom: 5px;
+}
+
+#gift-modal-content h2 {
+  margin-top: 5px;
+  padding: 5px 100px;
+}
+
+#gift-modal-content p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+#gift-modal-content code {
+  padding: 5px;
+  border-radius: 1px;
+  background-color: var(--color-light-purple);
+}
+#gift-close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+#gift-modal-overlay.active {
+  visibility: visible;
+  opacity: 1;
+}
+
 
 /* ================ animations ================ */
 .rotate {
@@ -389,8 +614,13 @@ body {
   transform-origin: center;
   animation-delay: var(--random-delay);
 }
+
+.zoom-out {
+  animation: zoom-out 4s ease-in-out forwards;
+}
+
 .zoom-once {
-  animation: zoomInOutOnce 1s ease-in-out;
+  animation: zoomInOutOnce var(--anim-duration, 1s) ease-in-out;
   animation-delay: var(--random-delay);
 }
 
@@ -408,6 +638,17 @@ body {
   }
 }
 
+@keyframes zoom-out {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0.5);
+  }
+}
+
+
 @keyframes zoomInOut {
   0% {
     transform: scale(1);
@@ -423,7 +664,7 @@ body {
 }
 
 .blink-bg-color {
-  animation: blink 0.5s infinite;
+  animation: blink 1s infinite;
   background-color: var(--blink-color, #98aaf1) !important;
 }
 
@@ -522,6 +763,7 @@ body {
     opacity: 1;
   }
 }
+
 @keyframes fade-out {
   0% {
     opacity: 1;
@@ -547,13 +789,16 @@ body {
     right: 0;
     opacity: 0;
   }
+
   20% {
     opacity: 0.8;
   }
+
   99% {
     right: 90%;
     opacity: 0;
   }
+
   100% {
     right: 0;
     opacity: 0;
@@ -564,9 +809,11 @@ body {
   0% {
     opacity: 0;
   }
+
   20% {
     opacity: 1;
   }
+
   100% {
     opacity: 1;
   }

@@ -24,6 +24,8 @@ const TRANSLATION = {
   HALF_HALF: 'חצי חצי',
 };
 
+const SUPPORTED_PROPS = ['age', 'sector', 'openMinded'];
+
 const maleCandidates = [
   {
     id: 1,

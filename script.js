@@ -1,7 +1,16 @@
-const WAIT_BEFORE_CHECK_MATCH_INDICATION = 1000;
-const RESET_AFTER_SUCCESS_MATCH = 5000;
-const RESET_AFTER_WRONG_MATCH = 4000;
+const WAIT_BEFORE_START_HIGHLIGHTS = 4000;
+const WAIT_BETWEEN_PROP_CHECK = 600;
+const WAIT_AFTER_WRONG_HIGHLIGHTS = 2000;
+const WAIT_AFTER_CORRECT_HIGHLIGHTS = 2000;
+const RESET_AFTER_SUCCESS_MATCH = 6000;
+const RESET_AFTER_WRONG_MATCH = 1000;
 const GAME_TIMER_MINUTES = 5;
+
+let isGameOver = false;
+const gameBgSound = new Audio('./sounds/game-bg.mp3');
+gameBgSound.loop = true;
+
+let wins = 0;
 
 // ------------------------- COLORS -----------------------------------
 const originalColors = [
@@ -22,9 +31,43 @@ function getColor() {
 let firstChoosenCard = null;
 let canClick = true;
 
+const bruchAnimationsStack = [];
+const gameSounds = [];
 
 // ------------------------- BUILD GAME BOARD -------------------------
+async function initStartContainer() {
+  const text1Elements = document.querySelectorAll('.start-game-container .text-1 p');
+  const text2Elements = document.querySelectorAll('.start-game-container .text-2 p');
+  [...text1Elements, ...text2Elements].forEach(p => p.classList.add('transparent'));
+  
+  for (p of text1Elements) {
+    p.classList.remove('transparent');
+    animateBrush({ element: p, color: 'purple', duration: 2, playSound: false, zoomTimeout: 1000 });
+    await delay(1000);
+    p.classList.add('active');
+  }
+
+  await delay(1000);
+
+  for (p of text2Elements) {
+    p.classList.remove('transparent');
+    animateBrush({ element: p, color: 'natural', duration: 2, playSound: false, zoomTimeout: 1000 });
+    await delay(1000);
+    p.classList.add('active');
+  }
+
+  await delay(1000);
+  const button = document.querySelector('.start-game-container button');
+  button.classList.remove('transparent');
+}
+
 function initializeGame() {
+  const start = document.querySelector('.start-game-container');
+  start.classList.add('hidden');
+
+  const game = document.querySelector('.board-container');
+  game.classList.remove('hidden');
+
   const maleSection = document.querySelector('.section.male');
   const femaleSection = document.querySelector('.section.female');
 
@@ -32,6 +75,9 @@ function initializeGame() {
   shuffleArray(femaleCandidates).forEach(female => femaleSection.appendChild(createCard(female, 'FEMALE')));
 
   initTimer();
+  setTimeout(() => {
+    gameBgSound.play();
+  });
 }
 
 function initTimer() {
@@ -123,33 +169,38 @@ function createCard(candidate, type) {
   const cardBack = document.createElement('div');
   cardBack.classList.add('card-back');
 
-  // Dynamically create properties HTML
   let propertiesHTML = '<div class="title">מי אני?</div>';
-  for (const [key, value] of Object.entries(candidate.properties)) {
+  let lookingForHTML = `<div class="title">מה אני ${type === 'MALE' ? 'מחפש' : 'מחפשת'}:</div>`;
+
+  for (const prop of SUPPORTED_PROPS) {
+    // create property HTML
+    const value = candidate.properties[prop];
     if (value !== undefined) {
       const translatedValue = TRANSLATION[`${type}_${value}`] || TRANSLATION[value] || value;
-      propertiesHTML += `<div class='property property-${key}'><span class='key'>${TRANSLATION[key] || key}:</span><span class='value'>${translatedValue}<span></div>`;
+      propertiesHTML += `<div class='property property-${prop}'><span class='key'>${TRANSLATION[prop] || prop}:</span><span class='value'>${translatedValue}<span></div>`;
     }
-  }
 
-  // Dynamically create looking for HTML
-  let lookingForHTML = `<div class="title">מה אני ${type === 'MALE' ? 'מחפש' : 'מחפשת'}:</div>`;
-  for (const [key, value] of Object.entries(candidate.lookingFor)) {
-    if (value !== undefined) {
-      let valueString = TRANSLATION[value] || value;
+    // create looking for HTML
+    const lookingForValue = candidate.lookingFor[prop];
+    if (lookingForValue !== undefined) {
+      let lookingForValueString = TRANSLATION[lookingForValue] || lookingForValue;
       // age
-      if (value.min) {
-        valueString = `${value.max} - ${value.min}`;
-      } else if (Array.isArray(value)) {
-        valueString = value.map(v => {
+      if (lookingForValue.min) {
+        lookingForValueString = `${lookingForValue.max} - ${lookingForValue.min}`;
+      } else if (Array.isArray(lookingForValue)) {
+        lookingForValueString = lookingForValue.map(v => {
           return TRANSLATION[`${lookingForType}_${v}`] || TRANSLATION[v] || v;
-        }).join(', ');
+        }).join(' / ');
       }
-      lookingForHTML += `<div class='property looking-for-${key}'><span class='key'>${TRANSLATION[key] || key}:</span><span class='value'>${valueString}<span></div>`;
+      lookingForHTML += `<div class='property looking-for-${prop}'><span class='key'>${TRANSLATION[prop] || prop}:</span><span class='value'>${lookingForValueString}<span></div>`;
     }
   }
 
-  cardBack.innerHTML = `<div class='card-details'><div class='properties'>${propertiesHTML}</div><div class='looking-for'>${lookingForHTML}</div></div>`;
+  cardBack.innerHTML = `<div class='card-details'>
+    <div class='name' style="--anim-duration: 4s">${candidate.name}</div>
+    <div class='properties'>${propertiesHTML}</div>
+    <div class='looking-for'>${lookingForHTML}</div>
+  </div>`;
 
   cardInner.appendChild(cardFront);
   cardInner.appendChild(cardBack);
@@ -183,12 +234,15 @@ function onCardClicked(card) {
   card.classList.toggle('active');
   card.classList.toggle('flipped');
 
+
   // handle click event
   if (firstChoosenCard) {
     canClick = false;
     checkMatch(firstChoosenCard, card);
+    onCardOpened(card, 1);
   } else {
     firstChoosenCard = card;
+    onCardOpened(card, 2);
   }
 }
 
@@ -197,10 +251,11 @@ function onSucessMatch(firstCard, secondCard) {
   successMatchAnimation();
 
   setTimeout(() => {
-
     firstCard.classList.remove('flipped');
     secondCard.classList.remove('flipped');
-  }, RESET_AFTER_SUCCESS_MATCH / 4 * 3);
+    lowerBgVolume(0.1);
+    playGameSound('claps2', false);
+  }, RESET_AFTER_SUCCESS_MATCH / 4);
 
   setTimeout(() => {
     firstCard.classList.add('matched');
@@ -209,19 +264,23 @@ function onSucessMatch(firstCard, secondCard) {
     stopBlink([firstCard, secondCard])
     bgColorForMatch([firstCard, secondCard])
     resetMatchState(firstCard, secondCard);
+    resetBgVolume();
+    checkGift();
   }, RESET_AFTER_SUCCESS_MATCH);
 }
 
 function onFailureMatch(firstCard, secondCard) {
   blink([firstCard, secondCard], 'red');
   wrongMatchAnimation();
-
+  playGameSound('wrong', false);
   setTimeout(() => {
     firstCard.classList.remove('flipped');
     secondCard.classList.remove('flipped');
 
     stopBlink([firstCard, secondCard])
     resetMatchState(firstCard, secondCard);
+    resetHighlights();
+    resetBgVolume();
   }, RESET_AFTER_WRONG_MATCH);
 }
 
@@ -238,9 +297,20 @@ function resetMatchState(firstCard, secondCard) {
   resetMatchAnimation();
 }
 
-function gameOver() {
+async function gameOver() {
+  isGameOver = true;
   const gameBoard = document.querySelector('.game-over-container');
   gameBoard.style.display = 'block';
+  const text = document.querySelector('.text-2');
+  playGameSound('game-over');
+
+  await delay(500);
+  animateBrush({ element: text, color: 'red', duration: 3, playSound: false });
+  setInterval(() => {
+    playGameSound('game-over');
+    lowerBgVolume(0.5);
+    animateBrush({ element: text, color: 'red', duration: 3, playSound: false });
+  }, 4000);
 }
 
 // ------------------------- LOGIC ------------------------------------
@@ -257,59 +327,60 @@ function propertyMatch(prop, lookingFor) {
 }
 
 async function checkMatch(firstCard, secondCard) {
-  const firstCandidate = firstCard.dataset.type === 'MALE' ? maleCandidates[firstCard.dataset.id - 1] : femaleCandidates[firstCard.dataset.id - 1];
-  const secondCandidate = secondCard.dataset.type === 'FEMALE' ? femaleCandidates[secondCard.dataset.id - 1] : maleCandidates[secondCard.dataset.id - 1];
+  if (isGameOver) return;
 
-  if (firstCandidate && secondCandidate) {
-    setTimeout(async () => {
-      const match = await highlightMatches(firstCard, secondCard);
-      setTimeout(() =>
-        (match ? onSucessMatch : onFailureMatch)(firstCard, secondCard)
-        , 1000);
-    }, WAIT_BEFORE_CHECK_MATCH_INDICATION);
+  lowerBgVolume();
+  await delay(WAIT_BEFORE_START_HIGHLIGHTS);
+
+  const match = await highlightMatches(firstCard, secondCard);
+  if (isGameOver) return;
+
+  if (match) {
+    wins ++;
+    playGameSound('claps');
+    await delay(WAIT_AFTER_CORRECT_HIGHLIGHTS);
+    onSucessMatch(firstCard, secondCard)
+  } else {
+    await delay(WAIT_AFTER_WRONG_HIGHLIGHTS);
+    onFailureMatch(firstCard, secondCard)
   }
 }
 
 async function highlightMatches(card1, card2) {
   const [maleCard, femaleCard] = card1.dataset.type === 'MALE' ? [card1, card2] : [card2, card1];
-  let counter = 1;
-
-  function animateBrush(element, className) {
-    element.style = `--clip-path: url(#clip-indefinite-${counter})`;
-    element.classList.add(className);
-    element.classList.add('zoom-once');
-    document.getElementById(`anim-${counter}`).beginElement();
-    counter = counter+1;
-    playGameSound('check');
-  }
 
   async function highlight(firstCard, secondCard) {
-    const firstCandidate = firstCard.dataset.type === 'MALE' ? maleCandidates[firstCard.dataset.id - 1] : femaleCandidates[firstCard.dataset.id - 1];
-    const secondCandidate = secondCard.dataset.type === 'FEMALE' ? femaleCandidates[secondCard.dataset.id - 1] : maleCandidates[secondCard.dataset.id - 1];
+    const firstCandidate = getCandidateById(firstCard.dataset.type, firstCard.dataset.id);
+    const secondCandidate = getCandidateById(secondCard.dataset.type, secondCard.dataset.id);
 
-    for (const [key, lookingForValue] of Object.entries(firstCandidate.lookingFor)) {
-      const lookingForElement = firstCard.querySelector(`.looking-for-${key}`);
-      const propertyElement = secondCard.querySelector(`.property-${key}`);
+    for (const prop of SUPPORTED_PROPS) {
+      if (isGameOver) return;
 
-      const isMatch = propertyMatch(secondCandidate.properties[key], lookingForValue);
+      const lookingForValue = firstCandidate.lookingFor[prop];
+      const lookingForElement = firstCard.querySelector(`.looking-for-${prop}`);
+      const propertyElement = secondCard.querySelector(`.property-${prop}`);
+
+      const isMatch = propertyMatch(secondCandidate.properties[prop], lookingForValue);
 
       if (propertyElement) {
         if (isMatch) {
-          animateBrush(lookingForElement, 'highlight-match');
+          animateBrush({ element: lookingForElement, color: 'yellow' });
           await delay(500);
-          animateBrush(propertyElement, 'highlight-match');
-          await delay(2000);
+          animateBrush({ element: propertyElement, color: 'yellow' });
+          await delay(WAIT_BETWEEN_PROP_CHECK);
         } else {
-          animateBrush(lookingForElement, 'highlight-no-match');
+          animateBrush({ element: lookingForElement, color: 'red' });
           await delay(500);
-          animateBrush(propertyElement, 'highlight-no-match');
-          await delay(2000);
+          animateBrush({ element: propertyElement, color: 'red', playSound: false });
+          await delay(500);
+          playGameSound('wrong-check');
+          await delay(WAIT_BETWEEN_PROP_CHECK);
         }
       }
 
       if (!isMatch) return false;
     }
-    
+
     return true;
   }
 
@@ -319,6 +390,39 @@ async function highlightMatches(card1, card2) {
   return match1 && match2;
 }
 
+function resetHighlights() {
+  document.querySelectorAll('.property').forEach(element => {
+    element.classList.remove('zoom-once');
+    element.classList.remove('brush-highlight');
+    element.classList.remove('highlight-red');
+    element.classList.remove('highlight-yellow');
+    element.classList.remove('highlight-natural');
+  });
+}
+
+function getCandidateById(type, id) {
+  if (type === 'MALE') {
+    return maleCandidates.find(c => c.id == id);
+  } else {
+    return femaleCandidates.find(c => c.id == id);
+  }
+}
+
+function checkGift() {
+  if (wins !== 3)  return;
+  
+  const modalOverlay = document.getElementById('gift-modal-overlay');
+  const closeModal = document.getElementById('gift-close-modal');
+  modalOverlay.classList.add('active');
+  closeModal.addEventListener('click', () =>{
+    modalOverlay.classList.remove('active');
+  });
+
+  modalOverlay.querySelectorAll('.text-to-highlight').forEach(e => {
+    animateBrush({ element: e, color: 'yellow', duration: 1, playSound: false });
+  });
+  playGameSound('win');
+}
 
 // ------------------------ ACTIONS -----------------------------------
 function blink(elements, color) {
@@ -353,45 +457,91 @@ function resetMatchAnimation() {
   document.getElementById('match-animation').classList.remove('rotate-zoom')
 }
 
+function onCardOpened(card) {
+  playGameSound('flip');
+  setTimeout(() => {
+    const nameElement = card.querySelector('.name');
+    animateBrush({ element: nameElement, color: 'natural', playSound: false });
+  }, 500);
+}
 
-function playGameSound(type, pauseBg = false) {
-  // if (pauseBg) {
-  //   gameBgSound.pause();
-  // } else {
-  //   gameBgSound.volume = 0.1;
-  // }
+async function playGameSound(type, pauseOther = true) {
+  if (pauseOther) {
+    gameSounds.forEach(sound => sound.pause());
+  }
 
   let path = '';
-  let volume = 1;
+  let volume = 0.3;
   switch (type) {
     case 'check':
-      volume = 0.7;
       path = './sounds/check2.mp3';
       break;
     case 'wrong':
-      path = './sounds/wrong.mp3';
+      volume = 0.1;
+      path = './sounds/wrong1.mp3';
+      break;
+    case 'wrong-check':
+      path = './sounds/wrong-check.mp3';
       break;
     case 'flip':
-      path = './sounds/tada.mp3';
+      volume = 0.2;
+      path = './sounds/open-card.mp3';
       break;
-    case 'feedback':
+    case 'claps':
       path = './sounds/claps.mp3';
+      break;
+    case 'claps2':
+      volume = 0.3;
+      path = './sounds/claps2.mp3';
+      break;
+    case 'game-over':
+      path = './sounds/game-over.mp3';
+      break;
+    case 'win':
+      path = './sounds/win.mp3';
       break;
     default:
       break;
   }
+
   var audio = new Audio(path);
   audio.volume = volume;
+
   audio.play();
-  audio.onended = () => {
-    // console.log('gameBgSound.volume = 0.5;')
-    // gameBgSound.volume = 0.5;
-    // gameBgSound.play();
-  }
+  gameSounds.push(audio);
 };
 
+function lowerBgVolume(volume = 0.3) {
+  gameBgSound.volume = volume;
+}
 
-initializeGame();
+function resetBgVolume() {
+  gameBgSound.volume = 1;
+}
+
+// ------------------------ ANIMATIONS -----------------------------------
+
+function animateBrush({ element, color, duration = 1, playSound = true, zoomTimeout = 0 }) {
+  const id = getAnimationBrushId();
+
+  element.style.setProperty('--clip-path', `url(#clip-indefinite-${id})`);
+
+  setTimeout(() => {
+    element.classList.add('zoom-once');
+  }, zoomTimeout);
+  element.classList.add('brush-highlight');
+  element.classList.add(`highlight-${color}`);
+
+  const anim = document.getElementById(`anim-${id}`);
+  if (duration) {
+    anim.setAttribute('dur', `${duration}s`);
+  }
+  anim.beginElement();
+
+  if (playSound) {
+    playGameSound('check');
+  }
+}
 
 // ------------------------ UTILS -----------------------------------
 function shuffleArray(array) {
@@ -412,3 +562,36 @@ function getQueryParams() {
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+function generateRandomId() {
+  return 'id-' + Math.random().toString(36).substring(2, 15);
+}
+
+function genereateBrushAnimations() {
+  for (let i = 0; i < 10; i++) {
+    genereateBrushAnimation();
+  }
+}
+
+function genereateBrushAnimation() {
+  const id = generateRandomId();
+  const svgString = BRUSH_SVG.replaceAll('{{id}}', id);
+  const parser = new DOMParser();
+  const svgDoc = parser.parseFromString(svgString, "image/svg+xml");
+  const svgElement = svgDoc.documentElement;
+  document.body.appendChild(svgElement);
+  bruchAnimationsStack.unshift(id);
+}
+
+function getAnimationBrushId() {
+  const id = bruchAnimationsStack.pop();
+  genereateBrushAnimation();
+  return id;
+}
+
+function goToSite() {
+  window.open('https://hashadchan.co.il/?utm_source=memory_game&utm_medium=site', '_blank');
+}
+
+genereateBrushAnimations();
+initStartContainer();
