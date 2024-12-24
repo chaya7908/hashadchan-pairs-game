@@ -31,7 +31,7 @@ const maleCandidates = [
   {
     id: 1,
     name: 'אריה לייב',
-    avatar: 'MALE_PROFILE_1',
+    avatar: 'MALE_PROFILE_2',
     properties: {openMinded: 'VERY_CONSERVATIVE', sector: 'LITHUANIAN', age: 28},
     lookingFor: {
       openMinded: ['VERY_CONSERVATIVE'],
@@ -42,7 +42,7 @@ const maleCandidates = [
   {
     id: 2,
     name: 'שמעון דובער',
-    avatar: 'MALE_PROFILE_1',
+    avatar: 'MALE_PROFILE_9',
     properties: {openMinded: 'VERY_CONSERVATIVE', sector: 'HASIDIC', age: 17},
     lookingFor: {
       openMinded: ['CONSERVATIVE', 'VERY_CONSERVATIVE'],
@@ -52,8 +52,8 @@ const maleCandidates = [
   },
   {
     id: 3,
-    name: 'יוסף',
-    avatar: 'MALE_PROFILE_1',
+    name: 'רחמים',
+    avatar: 'MALE_PROFILE_6',
     properties: {openMinded: 'OPEN', sector: 'SFARADI', age: 32},
     lookingFor: {
       openMinded: ['CONSERVATIVE_AND_OPEN_MIND', 'OPEN', 'MODERN'],
@@ -64,10 +64,10 @@ const maleCandidates = [
   {
     id: 4,
     name: 'מנחם מענדל',
-    avatar: 'MALE_PROFILE_1',
+    avatar: 'MALE_PROFILE_3',
     properties: {openMinded: 'CONSERVATIVE_AND_OPEN_MIND', sector: 'CHABAD', age: 23},
     lookingFor: {
-      openMinded: ['CONSERVATIVE', 'CONSERVATIVE_AND_OPEN_MIND'],
+      openMinded: ['CONSERVATIVE_AND_OPEN_MIND', 'OPEN'],
       sector: ['CHABAD', 'HASIDIC'],
       age: {min: 19, max: 23},
     },
@@ -75,7 +75,7 @@ const maleCandidates = [
   {
     id: 5,
     name: 'שלום',
-    avatar: 'MALE_PROFILE_1',
+    avatar: 'MALE_PROFILE_7',
     properties: {openMinded: 'CONSERVATIVE', sector: 'YEMEN', age: 24},
     lookingFor: {
       openMinded: ['CONSERVATIVE', 'CONSERVATIVE_AND_OPEN_MIND'],
@@ -86,18 +86,18 @@ const maleCandidates = [
   {
     id: 6,
     name: 'נתי',
-    avatar: 'MALE_PROFILE_1',
-    properties: {openMinded: 'CONSERVATIVE_AND_OPEN_MIND', sector: 'HALF_HALF', age: 27},
+    avatar: 'MALE_PROFILE_12',
+    properties: {openMinded: 'MODERN', sector: 'HALF_HALF', age: 27},
     lookingFor: {
-      openMinded: ['CONSERVATIVE', 'CONSERVATIVE_AND_OPEN_MIND', 'OPEN'],
+      openMinded: ['MODERN', 'VERY_MODERN', 'OPEN'],
       sector: ['HALF_HALF', 'CHABAD'],
-      age: {min: 25, max: 29},
+      age: {min: 19, max: 29},
     },
   },
   {
     id: 7,
     name: 'יוסף',
-    avatar: 'MALE_PROFILE_1',
+    avatar: 'MALE_PROFILE_11',
     properties: {openMinded: 'VERY_CONSERVATIVE', sector: 'SFARADI', age: 22},
     lookingFor: {
       openMinded: ['VERY_CONSERVATIVE', 'CONSERVATIVE'],
@@ -108,7 +108,7 @@ const maleCandidates = [
   {
     id: 8,
     name: 'צבי אלימלך',
-    avatar: 'MALE_PROFILE_1',
+    avatar: 'MALE_PROFILE_9',
     properties: {openMinded: 'CONSERVATIVE_AND_OPEN_MIND', sector: 'HASIDIC', age: 22},
     lookingFor: {
       openMinded: ['CONSERVATIVE', 'CONSERVATIVE_AND_OPEN_MIND', 'OPEN', 'MODERN'],
@@ -119,7 +119,7 @@ const maleCandidates = [
   {
     id: 9,
     name: 'יוסי',
-    avatar: 'MALE_PROFILE_1',
+    avatar: 'MALE_PROFILE_13',
     properties: {openMinded: 'MODERN', sector: 'LITHUANIAN', age: 24},
     lookingFor: {
       openMinded: ['OPEN', 'MODERN', 'VERY_MODERN'],
@@ -130,7 +130,7 @@ const maleCandidates = [
   {
     id: 10,
     name: 'שמואל',
-    avatar: 'MALE_PROFILE_1',
+    avatar: 'MALE_PROFILE_10',
     properties: {openMinded: 'VERY_MODERN', sector: 'LITHUANIAN', age: 49},
     lookingFor: {
       openMinded: ['VERY_MODERN'],
@@ -140,121 +140,120 @@ const maleCandidates = [
   },
   {
     id: 11,
-    name: '',
-    avatar: 'MALE_PROFILE_1',
-    properties: {openMinded: 'CONSERVATIVE', sector: 'SFARADI', age: 23},
+    name: 'סעדיה',
+    avatar: 'MALE_PROFILE_6',
+    properties: {openMinded: 'CONSERVATIVE', sector: 'YEMEN', age: 48},
     lookingFor: {
-      openMinded: ['VERY_CONSERVATIVE', 'CONSERVATIVE'],
-      sector: ['SFARADI', 'YEMEN'],
-      age: {min: 21, max: 25},
+      openMinded: ['CONSERVATIVE', 'CONSERVATIVE_AND_OPEN_MIND'],
+      sector: ['SFARADI', 'YEMEN', 'LITHUANIAN'],
+      age: {min: 41, max: 50},
     },
   },
   {
     id: 12,
-    name: '',
-    avatar: 'MALE_PROFILE_1',
-    properties: {openMinded: 'CONSERVATIVE', sector: 'YEMEN', age: 31},
+    name: 'יוריאל',
+    avatar: 'MALE_PROFILE_6',
+    properties: {openMinded: 'MODERN', sector: 'LITHUANIAN', age: 31},
     lookingFor: {
-      openMinded: ['CONSERVATIVE_AND_OPEN_MIND', 'CONSERVATIVE'],
-      sector: ['YEMEN', 'SFARADI'],
-      age: {min: 29, max: 33},
+      openMinded: ['MODERN', 'OPEN'],
+      sector: ['LITHUANIAN', 'HALF_HALF', 'SFARADI'],
+      age: {min: 26, max: 31},
     },
   },
   {
     id: 13,
-    name: '',
-    avatar: 'MALE_PROFILE_1',
-    properties: {openMinded: 'OPEN', sector: 'HASIDIC', age: 28},
+    name: 'אריאל',
+    avatar: 'MALE_PROFILE_13',
+    properties: {openMinded: 'MODERN', sector: 'LITHUANIAN', age: 27},
     lookingFor: {
-      openMinded: ['OPEN', 'MODERN'],
-      sector: ['HASIDIC', 'HALF_HALF'],
-      age: {min: 26, max: 30},
+      openMinded: ['MODERN', 'VERY_MODERN'],
+      sector: ['LITHUANIAN'],
+      age: {min: 20, max: 27},
     },
   },
   {
     id: 14,
-    name: '',
-    avatar: 'MALE_PROFILE_1',
-    properties: {openMinded: 'VERY_CONSERVATIVE', sector: 'CHABAD', age: 34},
+    name: 'ישראל מאיר',
+    avatar: 'MALE_PROFILE_2',
+    properties: {openMinded: 'CONSERVATIVE', sector: 'LITHUANIAN', age: 23},
     lookingFor: {
       openMinded: ['VERY_CONSERVATIVE', 'CONSERVATIVE'],
-      sector: ['CHABAD', 'HASIDIC'],
-      age: {min: 32, max: 36},
+      sector: ['LITHUANIAN'],
+      age: {min: 19, max: 23},
     },
   },
   {
     id: 15,
-    name: '',
-    avatar: 'MALE_PROFILE_1',
-    properties: {openMinded: 'MODERN', sector: 'LITHUANIAN', age: 30},
+    name: 'שאול',
+    avatar: 'MALE_PROFILE_12',
+    properties: {openMinded: 'OPEN', sector: 'SFARADI', age: 32},
     lookingFor: {
-      openMinded: ['MODERN', 'VERY_MODERN', 'OPEN'],
-      sector: ['LITHUANIAN', 'HALF_HALF'],
-      age: {min: 28, max: 32},
+      openMinded: ['MODERN', 'VERY_MODERN'],
+      sector: ['SFARADI', 'HALF_HALF'],
+      age: {min: 24, max: 30},
     },
   },
   {
     id: 16,
-    name: '',
-    avatar: 'MALE_PROFILE_1',
-    properties: {openMinded: 'VERY_MODERN', sector: 'SFARADI', age: 25},
+    name: 'יוני',
+    avatar: 'MALE_PROFILE_14',
+    properties: {openMinded: 'CONSERVATIVE_AND_OPEN_MIND', sector: 'SFARADI', age: 22},
     lookingFor: {
-      openMinded: ['MODERN', 'VERY_MODERN', 'OPEN'],
-      sector: ['SFARADI', 'HALF_HALF'],
-      age: {min: 23, max: 27},
+      openMinded: ['CONSERVATIVE', 'CONSERVATIVE_AND_OPEN_MIND'],
+      sector: ['SFARADI'],
+      age: {min: 19, max: 22},
     },
   },
   {
     id: 17,
-    name: '',
-    avatar: 'MALE_PROFILE_1',
-    properties: {openMinded: 'CONSERVATIVE_AND_OPEN_MIND', sector: 'HASIDIC', age: 29},
+    name: 'שימען',
+    avatar: 'MALE_PROFILE_9',
+    properties: {openMinded: 'VERY_CONSERVATIVE', sector: 'HASIDIC', age: 22},
     lookingFor: {
       openMinded: ['CONSERVATIVE', 'CONSERVATIVE_AND_OPEN_MIND'],
-      sector: ['HASIDIC', 'CHABAD'],
-      age: {min: 27, max: 31},
+      sector: ['HASIDIC'],
+      age: {min: 18, max: 24},
     },
   },
   {
     id: 18,
-    name: '',
-    avatar: 'MALE_PROFILE_1',
-    properties: {openMinded: 'CONSERVATIVE', sector: 'YEMEN', age: 21},
+    name: 'שרוליק',
+    avatar: 'MALE_PROFILE_7',
+    properties: {openMinded: 'VERY_MODERN', sector: 'HASIDIC', age: 19},
     lookingFor: {
-      openMinded: ['CONSERVATIVE'],
-      sector: ['YEMEN', 'SFARADI'],
-      age: {min: 20, max: 23},
+      openMinded: ['VERY_MODERN'],
+      sector: ['HASIDIC'],
+      age: {min: 18, max: 19},
     },
   },
   {
     id: 19,
-    name: '',
-    avatar: 'MALE_PROFILE_1',
-    properties: {openMinded: 'VERY_CONSERVATIVE', sector: 'SFARADI', age: 33},
+    name: 'יוסי',
+    avatar: 'MALE_PROFILE_13',
+    properties: {openMinded: 'CONSERVATIVE_AND_OPEN_MIND', sector: 'SFARADI', age: 25},
     lookingFor: {
-      openMinded: ['VERY_CONSERVATIVE', 'CONSERVATIVE'],
-      sector: ['SFARADI', 'YEMEN'],
-      age: {min: 31, max: 35},
+      openMinded: ['CONSERVATIVE_AND_OPEN_MIND', 'OPEN'],
+      sector: ['SFARADI', 'HALF_HALF'],
+      age: {min: 20, max: 24},
     },
   },
   {
     id: 20,
-    name: '',
-    avatar: 'MALE_PROFILE_1',
-    properties: {openMinded: 'MODERN', sector: 'HALF_HALF', age: 26},
+    name: 'יוסף',
+    avatar: 'MALE_PROFILE_15',
+    properties: {openMinded: 'CONSERVATIVE_AND_OPEN_MIND', sector: 'HASIDIC', age: 37},
     lookingFor: {
-      openMinded: ['MODERN', 'OPEN', 'VERY_MODERN'],
-      sector: ['HALF_HALF', 'CHABAD'],
-      age: {min: 24, max: 28},
+      openMinded: ['VERY_CONSERVATIVE', 'CONSERVATIVE_AND_OPEN_MIND'],
+      sector: ['HASIDIC', 'SFARADI', 'LITHUANIAN'],
+      age: {min: 30, max: 38},
     },
   },
 ];
-
 const femaleCandidates = [
   {
     id: 1,
     name: 'הניה',
-    avatar: 'FEMALE_PROFILE_1',
+    avatar: 'FEMALE_PROFILE_11',
     properties: {openMinded: 'VERY_CONSERVATIVE', sector: 'LITHUANIAN', age: 27},
     lookingFor: {
       openMinded: ['VERY_CONSERVATIVE'],
@@ -265,7 +264,7 @@ const femaleCandidates = [
   {
     id: 2,
     name: 'פעסיא חנה',
-    avatar: 'FEMALE_PROFILE_1',
+    avatar: 'FEMALE_PROFILE_4',
     properties: {openMinded: 'CONSERVATIVE', sector: 'HASIDIC', age: 18},
     lookingFor: {
       openMinded: ['CONSERVATIVE', 'VERY_CONSERVATIVE'],
@@ -275,8 +274,8 @@ const femaleCandidates = [
   },
   {
     id: 3,
-    name: 'אורית',
-    avatar: 'FEMALE_PROFILE_1',
+    name: 'סימה',
+    avatar: 'FEMALE_PROFILE_13',
     properties: {openMinded: 'MODERN', sector: 'SFARADI', age: 29},
     lookingFor: {
       openMinded: ['OPEN', 'MODERN', 'VERY_MODERN'],
@@ -287,7 +286,7 @@ const femaleCandidates = [
   {
     id: 4,
     name: 'חיה מושקא',
-    avatar: 'FEMALE_PROFILE_1',
+    avatar: 'FEMALE_PROFILE_7',
     properties: {openMinded: 'OPEN', sector: 'CHABAD', age: 22},
     lookingFor: {
       openMinded: ['CONSERVATIVE_AND_OPEN_MIND', 'OPEN'],
@@ -309,18 +308,18 @@ const femaleCandidates = [
   {
     id: 6,
     name: 'עדי',
-    avatar: 'FEMALE_PROFILE_1',
+    avatar: 'FEMALE_PROFILE_12',
     properties: {openMinded: 'VERY_MODERN', sector: 'HALF_HALF', age: 19},
     lookingFor: {
       openMinded: ['MODERN', 'VERY_MODERN'],
       sector: ['HALF_HALF', 'LITHUANIAN'],
-      age: {min: 23, max: 25},
+      age: {min: 23, max: 27},
     },
   },
   {
     id: 7,
     name: 'אסתר',
-    avatar: 'FEMALE_PROFILE_1',
+    avatar: 'FEMALE_PROFILE_9',
     properties: {openMinded: 'VERY_CONSERVATIVE', sector: 'SFARADI', age: 20},
     lookingFor: {
       openMinded: ['VERY_CONSERVATIVE'],
@@ -331,7 +330,7 @@ const femaleCandidates = [
   {
     id: 8,
     name: 'ליבי',
-    avatar: 'FEMALE_PROFILE_1',
+    avatar: 'FEMALE_PROFILE_8',
     properties: {openMinded: 'MODERN', sector: 'HASIDIC', age: 23},
     lookingFor: {
       openMinded: ['CONSERVATIVE_AND_OPEN_MIND', 'OPEN', 'MODERN'],
@@ -342,7 +341,7 @@ const femaleCandidates = [
   {
     id: 9,
     name: 'ליבי',
-    avatar: 'FEMALE_PROFILE_1',
+    avatar: 'FEMALE_PROFILE_7',
     properties: {openMinded: 'OPEN', sector: 'LITHUANIAN', age: 20},
     lookingFor: {
       openMinded: ['CONSERVATIVE_AND_OPEN_MIND', 'OPEN', 'MODERN'],
@@ -353,7 +352,7 @@ const femaleCandidates = [
   {
     id: 10,
     name: 'חנה',
-    avatar: 'FEMALE_PROFILE_1',
+    avatar: 'FEMALE_PROFILE_15',
     properties: {openMinded: 'VERY_MODERN', sector: 'CHABAD', age: 44},
     lookingFor: {
       openMinded: ['MODERN', 'VERY_MODERN'],
@@ -363,118 +362,112 @@ const femaleCandidates = [
   },
   {
     id: 11,
-    name: '',
-    avatar: 'FEMALE_PROFILE_1',
-    properties: {openMinded: 'CONSERVATIVE', sector: 'SFARADI', age: 22},
+    name: 'רחל',
+    avatar: 'FEMALE_PROFILE_14',
+    properties: {openMinded: 'CONSERVATIVE_AND_OPEN_MIND', sector: 'LITHUANIAN', age: 41},
     lookingFor: {
-      openMinded: ['VERY_CONSERVATIVE', 'CONSERVATIVE'],
-      sector: ['SFARADI', 'YEMEN'],
-      age: {min: 21, max: 25},
+      openMinded: ['CONSERVATIVE_AND_OPEN_MIND', 'CONSERVATIVE'],
+      sector: ['LITHUANIAN', 'YEMEN'],
+      age: {min: 35, max: 48},
     },
   },
   {
     id: 12,
-    name: '',
-    avatar: 'FEMALE_PROFILE_1',
-    properties: {openMinded: 'CONSERVATIVE', sector: 'YEMEN', age: 30},
+    name: 'שושי',
+    avatar: 'FEMALE_PROFILE_10',
+    properties: {openMinded: 'OPEN', sector: 'LITHUANIAN', age: 30},
     lookingFor: {
-      openMinded: ['CONSERVATIVE', 'CONSERVATIVE_AND_OPEN_MIND'],
-      sector: ['YEMEN', 'SFARADI'],
-      age: {min: 29, max: 33},
+      openMinded: ['OPEN', 'MODERN'],
+      sector: ['LITHUANIAN', 'HALF_HALF'],
+      age: {min: 28, max: 34},
     },
   },
   {
     id: 13,
-    name: '',
-    avatar: 'FEMALE_PROFILE_1',
-    properties: {openMinded: 'OPEN', sector: 'HASIDIC', age: 27},
+    name: 'נועה',
+    avatar: 'FEMALE_PROFILE_5',
+    properties: {openMinded: 'VERY_MODERN', sector: 'LITHUANIAN', age: 27},
     lookingFor: {
-      openMinded: ['OPEN', 'MODERN'],
-      sector: ['HASIDIC', 'HALF_HALF'],
+      openMinded: ['OPEN', 'MODERN', 'VERY_MODERN'],
+      sector: ['LITHUANIAN', 'HALF_HALF'],
       age: {min: 26, max: 30},
     },
   },
   {
     id: 14,
-    name: '',
-    avatar: 'FEMALE_PROFILE_1',
-    properties: {openMinded: 'VERY_CONSERVATIVE', sector: 'CHABAD', age: 33},
+    name: 'מנוחי',
+    avatar: 'FEMALE_PROFILE_4',
+    properties: {openMinded: 'VERY_CONSERVATIVE', sector: 'LITHUANIAN', age: 20},
     lookingFor: {
       openMinded: ['VERY_CONSERVATIVE', 'CONSERVATIVE'],
-      sector: ['CHABAD', 'HASIDIC'],
-      age: {min: 32, max: 36},
-    },
-  },
-  {
-    id: 15,
-    name: '',
-    avatar: 'FEMALE_PROFILE_1',
-    properties: {openMinded: 'MODERN', sector: 'LITHUANIAN', age: 29},
-    lookingFor: {
-      openMinded: ['MODERN', 'VERY_MODERN', 'OPEN'],
-      sector: ['LITHUANIAN', 'HALF_HALF'],
-      age: {min: 28, max: 32},
-    },
-  },
-  {
-    id: 16,
-    name: '',
-    avatar: 'FEMALE_PROFILE_1',
-    properties: {openMinded: 'VERY_MODERN', sector: 'SFARADI', age: 24},
-    lookingFor: {
-      openMinded: ['MODERN', 'VERY_MODERN', 'OPEN'],
-      sector: ['SFARADI', 'HALF_HALF'],
-      age: {min: 23, max: 27},
-    },
-  },
-  {
-    id: 17,
-    name: '',
-    avatar: 'FEMALE_PROFILE_1',
-    properties: {openMinded: 'CONSERVATIVE_AND_OPEN_MIND', sector: 'HASIDIC', age: 28},
-    lookingFor: {
-      openMinded: ['CONSERVATIVE', 'CONSERVATIVE_AND_OPEN_MIND'],
-      sector: ['HASIDIC', 'CHABAD'],
-      age: {min: 27, max: 31},
-    },
-  },
-  {
-    id: 18,
-    name: '',
-    avatar: 'FEMALE_PROFILE_1',
-    properties: {openMinded: 'CONSERVATIVE', sector: 'YEMEN', age: 22},
-    lookingFor: {
-      openMinded: ['CONSERVATIVE'],
-      sector: ['YEMEN', 'SFARADI'],
+      sector: ['LITHUANIAN'],
       age: {min: 21, max: 23},
     },
   },
   {
-    id: 19,
-    name: '',
-    avatar: 'FEMALE_PROFILE_1',
-    properties: {openMinded: 'VERY_CONSERVATIVE', sector: 'SFARADI', age: 32},
+    id: 15,
+    name: 'מיכל',
+    avatar: 'FEMALE_PROFILE_3',
+    properties: {openMinded: 'MODERN', sector: 'SFARADI', age: 26},
     lookingFor: {
-      openMinded: ['VERY_CONSERVATIVE', 'CONSERVATIVE'],
-      sector: ['SFARADI', 'YEMEN'],
-      age: {min: 31, max: 35},
+      openMinded: ['MODERN', 'VERY_MODERN', 'OPEN'],
+      sector: ['SFARADI', 'HALF_HALF', 'LITHUANIAN'],
+      age: {min: 25, max: 33},
+    },
+  },
+  {
+    id: 16,
+    name: 'אילה',
+    avatar: 'FEMALE_PROFILE_6',
+    properties: {openMinded: 'CONSERVATIVE_AND_OPEN_MIND', sector: 'SFARADI', age: 19},
+    lookingFor: {
+      openMinded: ['CONSERVATIVE_AND_OPEN_MIND', 'OPEN'],
+      sector: ['SFARADI'],
+      age: {min: 21, max: 22},
+    },
+  },
+  {
+    id: 17,
+    name: 'בלומא רייזל',
+    avatar: 'FEMALE_PROFILE_9',
+    properties: {openMinded: 'CONSERVATIVE', sector: 'HASIDIC', age: 23},
+    lookingFor: {
+      openMinded: ['CONSERVATIVE', 'VERY_CONSERVATIVE', 'CONSERVATIVE_AND_OPEN_MIND'],
+      sector: ['HASIDIC'],
+      age: {min: 20, max: 24},
+    },
+  },
+  {
+    id: 18,
+    name: 'שיינדי',
+    avatar: 'FEMALE_PROFILE_10',
+    properties: {openMinded: 'VERY_MODERN', sector: 'HASIDIC', age: 19},
+    lookingFor: {
+      openMinded: ['MODERN', 'VERY_MODERN'],
+      sector: ['HASIDIC'],
+      age: {min: 18, max: 19},
+    },
+  },
+  {
+    id: 19,
+    name: 'תמר',
+    avatar: 'FEMALE_PROFILE_13',
+    properties: {openMinded: 'CONSERVATIVE_AND_OPEN_MIND', sector: 'HALF_HALF', age: 22},
+    lookingFor: {
+      openMinded: ['CONSERVATIVE_AND_OPEN_MIND'],
+      sector: ['SFARADI', 'HALF_HALF'],
+      age: {min: 22, max: 26},
     },
   },
   {
     id: 20,
-    name: '',
-    avatar: 'FEMALE_PROFILE_1',
-    properties: {openMinded: 'MODERN', sector: 'HALF_HALF', age: 25},
+    name: 'אורית',
+    avatar: 'FEMALE_PROFILE_2',
+    properties: {openMinded: 'VERY_CONSERVATIVE', sector: 'SFARADI', age: 37},
     lookingFor: {
-      openMinded: ['MODERN', 'OPEN', 'VERY_MODERN'],
-      sector: ['HALF_HALF', 'CHABAD'],
-      age: {min: 24, max: 28},
+      openMinded: ['VERY_CONSERVATIVE', 'CONSERVATIVE_AND_OPEN_MIND'],
+      sector: ['SFARADI', 'HASIDIC', 'LITHUANIAN', 'CHABAD'],
+      age: {min: 33, max: 46},
     },
   },
 ];
-
-
-
-
-
-

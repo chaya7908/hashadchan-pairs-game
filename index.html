@@ -19,6 +19,16 @@
   <title>לא קל להיות שדכן</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="emojies.css">
+
+  <!-- Google Analytics 4 - Global Site Tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9SD0FESMHS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9SD0FESMHS');
+  </script>
 </head>
 
 <body>
@@ -149,7 +159,7 @@
       <div class="text-2">
       </div>
       <div class="text-2">
-        <p class="text-to-highlight">הצלחתם להתאים 3 זוגות? <span class="yellow">יש הפתעה :)</span></p>
+        <p class="text-to-highlight">הצלחתם להתאים 3 זוגות? <span class="red">יש הפתעה :)</span></p>
       </div>
       <button class="zoom transparent" id="start" onclick="initializeGame()">אני רוצה להתחיל</button>
     </div>
@@ -173,8 +183,10 @@
         <h1 class="text-1">לא קל להיות שדכן...</h1>
         <div class="buttons">
           <button id="play-again" onClick="window.location.reload()">רוצה לנסות שוב</button>
-          <button id="go-to-site" onClick="goToSite()">רוצה לחפש
-            ב'שדכן'</button>
+          <button id="go-to-site" onClick="goToSite()">
+            <p>רוצה לחפש לילד שלי בעצמי!</p>
+            <p>זה הרבה יותר קל</p>
+          </button>
         </div>
       </div>
     </div>
@@ -185,8 +197,8 @@
         <div>
           <h1>מזל טוב!</h1>
           <h2 class="text-to-highlight">הצלחת לשדך כמה זוגות</h2>
-          <p>מגיע לך קופון מתנה בשדכן - שם תוכלו לחפש שידוך לילדיכם, בצורה דיסקרטית ומכובדת!</p>
-          <p>הכניסו ברישום קוד קופון <code>משחנוכה</code> - שווי 116 ש"ח.</p>
+          <p>מגיע לך קופון מתנה ב<a href="#" onclick="goToSite()">שדכן</a> - שם תוכלו לחפש שידוך לילדיכם, בצורה דיסקרטית ומכובדת!</p>
+          <p>הכניסו ברישום קוד קופון <code>משחנוכה</code>- שווי 116 ש"ח.</p>
           <p>אין לכם ילדים בשידוכים?
             העבירו את הקופון למישהו שאתם אוהבים, ותצאו ידי חובת דמי חנוכה 🙂
           </p>

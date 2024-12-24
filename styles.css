@@ -5,6 +5,7 @@
   --color-yellow: #ffd500;
   --color-light-purple: #98aaf1;
   --color-red: #ff7777;
+  --color-green: rgb(144, 238, 144);
   --logo-animation-duration: 8s;
 }
 
@@ -128,6 +129,13 @@ body {
 .start-game-container .active.yellow {
   transition: all 2s ease;
   color: var(--color-yellow);
+  text-shadow: 0px 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+.start-game-container .active .red,
+.start-game-container .active.red {
+  transition: all 2s ease;
+  color: var(--color-red);
   text-shadow: 0px 1px 8px rgba(0, 0, 0, 0.5);
 }
 
@@ -451,8 +459,14 @@ body {
   padding: 10px 60px;
   cursor: pointer;
   border-radius: 10px;
+  font-size: 26px;
+}
+.game-over-container button p {
+  margin: 0;
+}
+.game-over-container button p:not(:first-child) {
+  margin: 0;
   font-size: 18px;
-  font-size: 2rem;
 }
 
 .game-over-container button:hover,
@@ -534,15 +548,9 @@ body {
   margin-top: 5px;
   padding: 5px 100px;
 }
-
-#gift-modal-content p {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-}
 #gift-modal-content code {
   padding: 5px;
+  margin: 0 8px;
   border-radius: 1px;
   background-color: var(--color-light-purple);
 }

@@ -1,7 +1,7 @@
-const WAIT_BEFORE_START_HIGHLIGHTS = 4000;
-const WAIT_BETWEEN_PROP_CHECK = 600;
+const WAIT_BEFORE_START_HIGHLIGHTS = 2500;
+const WAIT_BETWEEN_PROP_CHECK = 400;
 const WAIT_AFTER_WRONG_HIGHLIGHTS = 2000;
-const WAIT_AFTER_CORRECT_HIGHLIGHTS = 2000;
+const WAIT_AFTER_CORRECT_HIGHLIGHTS = 1000;
 const RESET_AFTER_SUCCESS_MATCH = 6000;
 const RESET_AFTER_WRONG_MATCH = 1000;
 const GAME_TIMER_MINUTES = 5;
@@ -151,7 +151,7 @@ function createCard(candidate, type) {
   // card front
   const cardFront = document.createElement('div');
   cardFront.classList.add('card-front');
-  const imgUrl = candidate.imageUrl || `${type}_PROFILE_${Math.floor(Math.random() * 15) + 1}`
+  const imgUrl = candidate.avatar || `${type}_PROFILE_${Math.floor(Math.random() * 15) + 1}`
   cardFront.innerHTML = `
     <div class="image-container">
         <img style="--random-delay: ${Math.random() * 4}s" class="swing" src="https://hashadchan.co.il/${imgUrl}.svg"/>
@@ -329,7 +329,7 @@ function propertyMatch(prop, lookingFor) {
 async function checkMatch(firstCard, secondCard) {
   if (isGameOver) return;
 
-  lowerBgVolume();
+  lowerBgVolume(0.5);
   await delay(WAIT_BEFORE_START_HIGHLIGHTS);
 
   const match = await highlightMatches(firstCard, secondCard);
@@ -485,7 +485,7 @@ async function playGameSound(type, pauseOther = true) {
       break;
     case 'flip':
       volume = 0.2;
-      path = './sounds/open-card.mp3';
+      path = './sounds/card.mp3';
       break;
     case 'claps':
       path = './sounds/claps.mp3';
