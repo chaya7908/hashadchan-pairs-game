@@ -4,7 +4,8 @@ const WAIT_AFTER_WRONG_HIGHLIGHTS = 2000;
 const WAIT_AFTER_CORRECT_HIGHLIGHTS = 1000;
 const RESET_AFTER_SUCCESS_MATCH = 6000;
 const RESET_AFTER_WRONG_MATCH = 1000;
-const GAME_TIMER_MINUTES = 5;
+const GAME_TIMER_MINUTES = 3;
+const WINS_FOR_GIFT = 2;
 
 let isGameOver = false;
 const gameBgSound = new Audio('./sounds/game-bg.mp3');
@@ -299,9 +300,9 @@ function resetMatchState(firstCard, secondCard) {
 
 async function gameOver() {
   isGameOver = true;
-  const gameBoard = document.querySelector('.game-over-container');
-  gameBoard.style.display = 'block';
-  const text = document.querySelector('.text-2');
+  const gameOverBoard = document.querySelector('.game-over-container');
+  gameOverBoard.style.display = 'block';
+  const text = gameOverBoard.querySelector('.text-2');
   playGameSound('game-over');
 
   await delay(500);
@@ -409,7 +410,7 @@ function getCandidateById(type, id) {
 }
 
 function checkGift() {
-  if (wins !== 3)  return;
+  if (wins !== WINS_FOR_GIFT)  return;
   
   const modalOverlay = document.getElementById('gift-modal-overlay');
   const closeModal = document.getElementById('gift-close-modal');
@@ -522,6 +523,8 @@ function resetBgVolume() {
 // ------------------------ ANIMATIONS -----------------------------------
 
 function animateBrush({ element, color, duration = 1, playSound = true, zoomTimeout = 0 }) {
+  element.classList.remove('zoom-once');
+  
   const id = getAnimationBrushId();
 
   element.style.setProperty('--clip-path', `url(#clip-indefinite-${id})`);

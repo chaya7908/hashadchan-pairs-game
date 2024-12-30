@@ -383,6 +383,9 @@ body {
   background-color: var(--color-light-purple);
   box-shadow: 0px 0px 20px 20px rgb(0 0 0 / 43%);
 }
+.card.active:not(.flipped) {
+  pointer-events: none;
+}
 
 .placeholder {
   visibility: hidden;
